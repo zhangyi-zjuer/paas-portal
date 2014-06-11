@@ -1,4 +1,4 @@
-paas-machine-admin
+paas-portal
 ==================
 ## setup
 python setup.py
@@ -10,5 +10,5 @@ python setup.py add username password
 python setup.py del username
 
 ## run 
-bash restart.sh
+bash restart.sh<br>
 it will listen port 8888
