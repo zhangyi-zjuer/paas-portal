@@ -1,0 +1,74 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/fixes.html" as fixes %}
+
+{% block title %}Pass Portal{% endblock %}
+
+{% block navbar %}
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+
+                <p class="navbar-brand">Portal</p>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for("admin.machines") }}">Machine</a></li>
+                    <li><a href="{{ url_for("admin.networks") }}">Network</a></li>
+                    <li><a href="{{ url_for("admin.instances") }}">Instances</a></li>
+                </ul>
+                {% if g.user.is_authenticated() %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a>{{ g.user.username }}</a></li>
+                        <li><a href="{{ url_for('user.logout') }}">Log out</a></li>
+                    </ul>
+                {% else %}
+                    <form class="navbar-form navbar-right" action="{{ url_for('user.login') }}" method="post"
+                          role="form">
+                        {{ g.form.hidden_tag() }}
+                        {{ g.form.username(class="form-control",placeholder="Username") }}
+                        {{ g.form.password(class="form-control",placeholder="Password") }}
+                        {{ g.form.remember_me(style="display:none;", checked="checked") }}
+                        <button type="submit" class="btn btn-success">Log in</button>
+                    </form>
+                {% endif %}
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+        <div class="masthead">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block content %}
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    {{ fixes.ie8() }}
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/base.css') }}">
+{% endblock %}

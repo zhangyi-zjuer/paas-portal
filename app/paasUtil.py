@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+# Created by zhangyi on 14-6-9.
+import json
+import urllib2
+import base64
+
+from config import GROUP_MODE, INSTANCE_STATUA, BasicAuth
+from models import *
+
+
+def get_instances_by_app(app_id, app_version=None):
+    satisfied_instances = []
+    instances = []
+    for machine in Machine.query.all():
+        agent = machine.agent
+        instances.extend(get_instances_by_agent(agent))
+
+    for instance in instances:
+        if app_id == instance['app_id'] and (not app_version or (app_version == instance['app_version'] )):
+            satisfied_instances.append(instance)
+
+    return satisfied_instances
+
+
+def get_instances_by_agent(agent):
+    instances = []
+    if agent and len(agent) > 10:
+        agent = json.loads(agent)
+    else:
+        return instances
+
+    for instance in agent['instances']:
+        instances.append({
+            'machine': agent['ip'],
+            'id': instance['id'],
+            'ip': instance['ip'],
+            'status': INSTANCE_STATUA[instance['status']],
+            'token': instance['token'],
+            'group_id': instance['groupId'],
+            'app_id': instance['app']['appId'],
+            'app_version': instance['app']['appVersion'],
+            'app_level': instance['app']['appLevel'],
+            'cpu': instance['app']['cpuNum'],
+            'cpu_mode': GROUP_MODE[instance['app']['cpuMode']],
+            'memory': instance['app']['memorySize'],
+            'disk': instance['app']['diskSize']
+
+        })
+
+    return instances
+
+
+def auth_request(url):
+    request = urllib2.Request(url)
+    if BasicAuth['enable']:
+        username = BasicAuth['username']
+        password = BasicAuth['password']
+        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+        request.add_header("Authorization", "Basic %s" % base64string)
+    return urllib2.urlopen(request)
+

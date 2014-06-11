@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <br/>
+
+        {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
+        <h2>Instances</h2>
+        <hr/>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th class="mid-td" style="width: 30%">Instance ID</th>
+                <th class="mid-td" style="width: 10%">Group ID</th>
+                <th class="mid-td" style="width: 10%">App ID</th>
+                <th class="mid-td" style="width: 10%">App Version</th>
+                <th class="mid-td" style="width: 10%">Instance IP</th>
+                <th class="mid-td" style="width: 10%">Instance Port</th>
+                <th class="mid-td" style="width: 10%">Agent IP</th>
+                <th class="mid-td" style="width: 15%">Status</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for instance in instances %}
+                <tr>
+                    <td class="mid-td">
+                        {{ instance.instance_id }}
+                    </td>
+
+                    <td class="mid-td">
+                        {{ instance.instance_group_id }}
+                    </td>
+                    <td class="mid-td">
+                        {{ instance.app_id }}
+                    </td>
+
+                    <td class="mid-td">
+                        {{ instance.app_version }}
+                    </td>
+
+                    <td class="mid-td">
+                        {{ instance.instance_ip }}
+                    </td>
+
+
+                    <td class="mid-td">
+                        {{ instance.instance_port }}
+                    </td>
+                    <td class="mid-td">
+                        {% if instance.agent_ip %}
+                            <a href="{{ url_for('admin.show_agent', machine_id = instance.machine_id) }}">{{ instance.agent_ip }}</a>
+                        {% else %}
+                            {{ instance.agent_ip }}
+                        {% endif %}
+                    </td>
+                    <td class="mid-td">
+                        {{ instance.status_desc }}
+                    </td>
+                    {% if g.user.is_authenticated() %}
+
+                        {% if instance.status == 200 %}
+                            <td class="mid-td">
+                                <a class="btn btn-danger" type="button"
+                                   href='{{ url_for('admin.shutdown_instance', app_id=instance.app_id, instance_id= instance.instance_id) }}'
+                                   onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>ShutDown</a>
+                            </td>
+                        {% endif %}
+
+                        {% if instance.status == 500 %}
+                            <td class="mid-td">
+                                <a class="btn btn-success" type="button"
+                                   href='{{ url_for('admin.restart_instance', app_id=instance.app_id, instance_id= instance.instance_id) }}'
+                                   onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>Restart</a>
+                            </td>
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
