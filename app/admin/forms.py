@@ -8,6 +8,8 @@ from app.models import Network
 
 
 class MachineForm(Form):
+    network_id = SelectField('network', coerce=int,
+                             choices=[(network.id, network.id) for network in Network.query.all()])
     agent = HiddenField('agent')
     version = IntegerField('version', default=1)
     cpu = IntegerField('cpu')
@@ -17,8 +19,7 @@ class MachineForm(Form):
     idc = TextField('idc')
     switcher = TextField('swithcer')
     frame = TextField('frame')
-    network_id = SelectField('network', coerce=int,
-                             choices=[(network.id, network.id) for network in Network.query.all()])
+
     submit_button = SubmitField('OK')
 
 
