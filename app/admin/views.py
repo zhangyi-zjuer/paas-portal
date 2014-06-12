@@ -216,6 +216,7 @@ def get_agent_info(agent):
             core_free = [core for core in core_free if core not in group['core']]
 
         basic['cpu_free'] = ', '.join(map(str, core_free))
+        basic['cpu_free_num'] = len(core_free)
 
         return basic, instances, cpu_groups
     return None, None, None

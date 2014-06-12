@@ -10,8 +10,9 @@
             <thead>
             <tr>
                 <th class="mid-td" style="width: 5%">ID</th>
-                <th class="mid-td" style="width: 10%">IP</th>
-                <th class="mid-td" style="width: 5%">CPU</th>
+                <th class="mid-td" style="width: 15%">IP</th>
+                <th class="mid-td" style="width: 3%">Cpu</th>
+                <th class="mid-td" style="width: 10%">Cpu Free</th>
                 <th class="mid-td" style="width: 10%">Memory</th>
                 <th class="mid-td" style="width: 10%">Memory Free</th>
                 <th class="mid-td" style="width: 10%">Instance Num</th>
@@ -33,6 +34,11 @@
                     <td class="mid-td">
                         {{ machine.cpu }}
                     </td>
+
+                    <td class="mid-td">
+                        {{ machine.basic.cpu_free_num }}
+                    </td>
+
 
                     <td class="mid-td">
                         {{ machine.basic.memory }}
