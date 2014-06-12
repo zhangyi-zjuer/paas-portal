@@ -59,3 +59,23 @@ def auth_request(url):
         request.add_header("Authorization", "Basic %s" % base64string)
     return urllib2.urlopen(request)
 
+
+def format_num(n):
+    unit = ['', 'K', 'M', 'G', 'T', 'P']
+    cnt = 0
+    number = n
+
+    while True:
+        n = n * 1.0 / 1024
+        if n < 1 or cnt >= len(unit) - 1:
+            break
+        cnt += 1
+        number = n
+
+    return str('%.2f' % number) + unit[cnt]
+
+
+
+
+
+

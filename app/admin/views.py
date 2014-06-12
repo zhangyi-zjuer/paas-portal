@@ -9,6 +9,7 @@ from flask.ext.login import login_required
 from app.models import *
 from app.admin.forms import *
 from app.database import DbUtil
+from app.paasUtil import format_num
 from config import GROUP_MODE, INSTANCE_STATUA, INSTANCE_STATUA_1
 
 
@@ -25,12 +26,16 @@ def machines():
     form = MachineSearchForm()
     if request.method == 'GET':
         machines = Machine.query.all()
+
     else:
         ip = form.ip.data.strip()
         if not ip:
             machines = Machine.query.all()
         else:
-            machines = Machine.query.filter(Machine.ip == ip)
+            machines = Machine.query.filter(Machine.ip == ip).all()
+
+    for machine in machines:
+        machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
 
     return render_template('machine.html', machines=machines, form=form)
 
@@ -164,10 +169,10 @@ def get_agent_info(agent):
 
         basic = {
             'cpu': agent['cpu'],
-            'memory': agent['memory']['total'],
-            'memory_free': agent['memory']['free'],
-            'disk': agent['disk']['total'],
-            'disk_free': agent['disk']['free'],
+            'memory': format_num(agent['memory']['total']),
+            'memory_free': format_num(agent['memory']['free']),
+            'disk': format_num(agent['disk']['total']),
+            'disk_free': format_num(agent['disk']['free']),
             'ip': agent['ip']
         }
 
@@ -199,8 +204,8 @@ def get_agent_info(agent):
                 'app_level': instance['app']['appLevel'],
                 'cpu': instance['app']['cpuNum'],
                 'cpu_mode': GROUP_MODE[instance['app']['cpuMode']],
-                'memory': instance['app']['memorySize'],
-                'disk': instance['app']['diskSize']
+                'memory': format_num(instance['app']['memorySize']),
+                'disk': format_num(instance['app']['diskSize'])
 
             })
 

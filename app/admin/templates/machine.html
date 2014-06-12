@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container">
         <br/>
-    
+
         {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
 
         <hr/>
@@ -10,14 +10,11 @@
             <thead>
             <tr>
                 <th class="mid-td" style="width: 5%">ID</th>
-                <th class="mid-td" style="width: 5%">Version</th>
                 <th class="mid-td" style="width: 10%">IP</th>
                 <th class="mid-td" style="width: 5%">CPU</th>
                 <th class="mid-td" style="width: 10%">Memory</th>
-                <th class="mid-td" style="width: 10%">Disk</th>
-                <th class="mid-td" style="width: 10%">IDC</th>
-                <th class="mid-td" style="width: 10%">Switcher</th>
-                <th class="mid-td" style="width: 10%">Frame</th>
+                <th class="mid-td" style="width: 10%">Memory Free</th>
+                <th class="mid-td" style="width: 10%">Instance Num</th>
                 <th class="mid-td" style="width: 5%">Network</th>
                 <th class="mid-td" style="width: 20%"></th>
             </tr>
@@ -27,9 +24,6 @@
                 <tr>
                     <td class="mid-td">
                         {{ machine.id }}
-                    </td>
-                    <td class="mid-td">
-                        {{ machine.version }}
                     </td>
 
                     <td class="mid-td">
@@ -41,24 +35,17 @@
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.memory }}
+                        {{ machine.basic.memory }}
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.disk }}
+                        {{ machine.basic.memory_free }}
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.idc }}
+                        {{ machine.basic.instance_num }}
                     </td>
 
-                    <td class="mid-td">
-                        {{ machine.switcher }}
-                    </td>
-
-                    <td class="mid-td">
-                        {{ machine.frame }}
-                    </td>
                     <td class="mid-td">
                         {{ machine.network_id }}
                     </td>
@@ -66,33 +53,11 @@
                     <td class="mid-td">
                         <a class="btn btn-primary" type="button"
                            href='{{ url_for('admin.show_agent', machine_id=machine.id) }}'>Agent</a>
-                        {% if g.user.is_authenticated() %}
-                            <a class="btn btn-info" type="button"
-                               href='{{ url_for('admin.edit_machine', machine_id=machine.id) }}'>Edit</a>
-                            <a class="btn btn-danger" type="button"
-                               href="{{ url_for('admin.del_machine', machine_id=machine.id) }}"
-                               onclick='{if(confirm("Are you sure to delete?")){return true;}return false;}'>Delete
-                            </a>
-                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
-        {% if g.user.is_authenticated() %}
-            <hr>
-            <table class="table" style="margin-bottom: 0px">
-                <tr>
-                    <td class="pull-right" style="border-top: 0px">
-                        <a class="btn btn-primary" type="button" id="confirmall"
-                           href="{{ url_for('admin.add_machine') }}">Add Machine</a>
-                        </p>
-                    </td>
-                </tr>
-
-            </table>
-        {% endif %}
     </div>
 
 {% endblock %}

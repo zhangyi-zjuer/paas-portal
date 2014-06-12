@@ -29,37 +29,10 @@
                     <td class="mid-td">
                         {{ network.ip_pool }}
                     </td>
-
-                    {% if g.user.is_authenticated() %}
-
-                        <td class="mid-td">
-                            <a class="btn btn-info" type="button"
-                               href='{{ url_for('admin.edit_network', network_id=network.id) }}'>Edit</a>
-                            &nbsp;&nbsp;
-                            <a class="btn btn-danger" type="button"
-                               href="{{ url_for('admin.del_network', network_id=network.id) }}"
-                               onclick='{if(confirm("Are you sure to delete?")){return true;}return false;}'>Delete
-                            </a>
-                        </td>
-                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
-       {% if g.user.is_authenticated() %}
-            <hr>
-            <table class="table" style="margin-bottom: 0px">
-                <tr>
-                    <td class="pull-right" style="border-top: 0px">
-                        <a class="btn btn-primary" type="button" id="confirmall"
-                           href="{{ url_for('admin.add_network') }}">Add Network</a>
-                        </p>
-                    </td>
-                </tr>
-
-            </table>
-        {% endif %}
     </div>
 
 {% endblock %}

@@ -31,7 +31,7 @@ class NetworkForm(Form):
 
 
 class InstanceSearchForm(Form):
-    type = SelectField('type', coerce=int, choices=[(0, 'Machine IP'), (1, 'AppId:Version')], default=0)
+    type = SelectField('type', coerce=int, choices=[(0, 'Machine IP'), (1, 'AppId:Version')], default=1)
     value = TextField('value')
     submit_button = SubmitField('Search')
 

@@ -54,14 +54,20 @@
                             {{ instance.agent_ip }}
                         {% endif %}
                     </td>
+
                     <td class="mid-td">
-                        {{ instance.status_desc }}
+                        {% if instance.status == 200 %}
+                            {{ instance.status_desc }}
+                        {% else %}
+                            <font color="red">{{ instance.status_desc }}</font>
+                        {% endif %}
+
                     </td>
                     {% if g.user.is_authenticated() %}
 
                         {% if instance.status == 200 %}
                             <td class="mid-td">
-                                <a class="btn btn-danger btn-custom" type="button"
+                                <a class="btn btn-success btn-custom" type="button"
                                    href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, instance_id= instance.instance_id) }}'
                                    onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
                             </td>
