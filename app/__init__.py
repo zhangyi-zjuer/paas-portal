@@ -31,6 +31,7 @@ def before_request():
     g.user = current_user
     if not current_user.is_authenticated():
         from app.user.forms import LoginForm
+
         g.form = LoginForm()
 
 
@@ -38,6 +39,8 @@ import views
 
 from admin.views import mod as admin_module
 from user.views import mod as user_module
+from api.views import mod as api_module
 
 app.register_blueprint(admin_module, url_prefix='/admin')
 app.register_blueprint(user_module, url_prefix='/user')
+app.register_blueprint(api_module, url_prefix='/api')

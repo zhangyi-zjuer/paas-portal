@@ -10,3 +10,7 @@ body {
     text-align: center;
     vertical-align: middle
 }
+
+.btn-custom {
+    width: 90px !important;
+}

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import json
-import time
 import re
 
 from flask import Blueprint, redirect, url_for, render_template, request
@@ -10,8 +9,7 @@ from flask.ext.login import login_required
 from app.models import *
 from app.admin.forms import *
 from app.database import DbUtil
-from app.paasUtil import auth_request
-from config import GROUP_MODE, INSTANCE_STATUA, INSTANCE_STATUA_1, PAAS_HOST
+from config import GROUP_MODE, INSTANCE_STATUA, INSTANCE_STATUA_1
 
 
 mod = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -102,8 +100,6 @@ def instances():
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
         if instance.agent_ip:
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
-    for instance in instances:
-        print instance.status_desc
 
     return render_template("instance.html", instances=instances, form=form)
 
@@ -145,36 +141,6 @@ def edit_network(network_id=None):
 def del_network(network_id):
     DbUtil.delete(Network.query.filter(Network.id == network_id).all())
     return redirect(url_for('admin.networks'))
-
-
-@mod.route('/instance/shutdown')
-@login_required
-def shutdown_instance():
-    app_id = request.args.get('app_id')
-    instance_id = request.args.get('instance_id')
-
-    url = PAAS_HOST + '/console/api/instance?op=shutdown&appId=' + app_id + '&instanceId=' + instance_id
-
-    response = auth_request(url)
-    print response.read()
-
-    time.sleep(0.5)
-    return redirect(url_for('admin.instances'))
-
-
-@mod.route('/instance/restart')
-@login_required
-def restart_instance():
-    app_id = request.args.get('app_id')
-    instance_id = request.args.get('instance_id')
-
-    url = PAAS_HOST + '/console/api/instance?op=restart&appId=' + app_id + '&instanceId=' + instance_id
-
-    response = auth_request(url)
-    print response.read()
-
-    time.sleep(0.5)
-    return redirect(url_for('admin.instances'))
 
 
 def add_form_data_to_db(obj, form):

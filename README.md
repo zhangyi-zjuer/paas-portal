@@ -1,5 +1,8 @@
 paas-portal
 ==================
+## install related libs
+bash install.sh
+
 ## setup
 python setup.py
 
