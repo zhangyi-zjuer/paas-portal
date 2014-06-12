@@ -19,7 +19,6 @@ class MachineForm(Form):
     frame = TextField('frame')
     network_id = SelectField('network', coerce=int,
                              choices=[(network.id, network.id) for network in Network.query.all()])
-
     submit_button = SubmitField('OK')
 
 
@@ -27,12 +26,11 @@ class NetworkForm(Form):
     mask = IntegerField('mask')
     gateway = TextField('gateway')
     ip_pool = TextField('ip_pool')
-
     submit_button = SubmitField('OK')
 
 
 class InstanceSearchForm(Form):
-    type = SelectField('type', coerce=int, choices=[(0, 'Machine IP'), (1, 'App ID And Version')], default=0)
+    type = SelectField('type', coerce=int, choices=[(0, 'Machine IP'), (1, 'AppId:Version')], default=0)
     value = TextField('value')
     submit_button = SubmitField('Search')
 
