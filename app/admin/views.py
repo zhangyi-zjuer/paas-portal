@@ -22,16 +22,17 @@ def index():
 
 @mod.route('/machines', methods=['GET', 'POST'])
 def machines():
+    form = MachineSearchForm()
     if request.method == 'GET':
         machines = Machine.query.all()
     else:
-        ip = request.form['ip'].strip()
+        ip = form.ip.data.strip()
         if not ip:
             machines = Machine.query.all()
         else:
             machines = Machine.query.filter(Machine.ip == ip)
 
-    return render_template('machine.html', machines=machines)
+    return render_template('machine.html', machines=machines, form=form)
 
 
 @mod.route('/machine/add', methods=['GET', 'POST'])

@@ -37,4 +37,9 @@ class InstanceSearchForm(Form):
     submit_button = SubmitField('Search')
 
 
+class MachineSearchForm(Form):
+    ip = TextField('ip', description='Enter Machine IP')
+    submit_button = SubmitField('Search')
+
+
 

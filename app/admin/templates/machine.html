@@ -2,19 +2,8 @@
 {% block content %}
     <div class="container">
         <br/>
-
-        <div class="row">
-            <form action="{{ url_for('admin.machines') }}" method="post">
-                <div class="col-lg-4">
-                    <div class="input-group">
-      <span class="input-group-btn">
-        <button id="search-machine-submit" class="btn btn-primary" type="submit">Click to Search</button>
-      </span>
-                        <input name="ip" type="text" placeholder="Enter Machine Ip" class="form-control">
-                    </div>
-                </div>
-            </form>
-        </div>
+    
+        {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
 
         <hr/>
         <table class="table table-striped table-bordered">
