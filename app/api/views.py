@@ -31,7 +31,7 @@ def restart_instance():
     app_id = request.args.get('app_id')
     instance_id = request.args.get('instance_id')
 
-    url = PAAS_HOST + '/console/api/instance?op=restart&appId=' + app_id + '&instanceId=' + instance_id
+    url = PAAS_HOST + '/console/api/instance?op=start&appId=' + app_id + '&instanceId=' + instance_id
 
     response = auth_request(url)
     print response.read()

@@ -127,7 +127,6 @@ def edit_network(network_id=None):
     if request.method == 'GET':
         if network_id:
             form = get_form_from_db(network, NetworkForm())
-
         return render_template('form_template.html', form=form)
 
     if not form.validate_on_submit():
@@ -148,7 +147,6 @@ def add_form_data_to_db(obj, form):
     for attr in [attr for attr in dir(form) if hasattr(getattr(form, attr), 'data')]:
         if attr not in ['__class__', 'csrf_token'] and hasattr(obj, attr):
             setattr(obj, attr, getattr(form, attr).data)
-            # print attr, getattr(form, attr).data
 
     DbUtil.add(obj)
 
