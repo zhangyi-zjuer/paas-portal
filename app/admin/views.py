@@ -94,7 +94,7 @@ def instances():
                 query = Instance.query.filter(Instance.agent_ip == value)
             else:
                 app_info = re.split(r'\s*:\s*', value)
-                query = Instance.query.filter(Instance.app_id == app_info[0])
+                query = Instance.query.filter(Instance.app_id.startswith(app_info[0]))
                 if len(app_info) == 2:
                     query = query.filter(Instance.app_version == app_info[1])
         else:
