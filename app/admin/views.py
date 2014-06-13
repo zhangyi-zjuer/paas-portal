@@ -34,14 +34,12 @@ def machines():
         else:
             machines = Machine.query.filter(Machine.ip == ip).all()
 
-    ips = set()
     for machine in machines:
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
         machine.format_disk = format_num(machine.disk)
         machine.format_memory = format_num(machine.memory)
-        ips.add(machine.ip)
 
-    ips = '["' + '","'.join(ips) + '"]'
+    ips = '["' + '","'.join([machine.ip for machine in Machine.query.all()]) + '"]'
 
     return render_template('machine.html', machines=machines, form=form, ips=ips)
 
@@ -108,15 +106,12 @@ def instances():
 
     instances = query.all()
 
-    app_id_set = set()
-
     for instance in instances:
-        app_id_set.add(instance.app_id)
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
         if instance.agent_ip:
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
 
-    app_ids = '["' + '","'.join(app_id_set) + '"]'
+    app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
 
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids)
 
