@@ -71,6 +71,7 @@
     {{ super() }}
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#ip").attr("autocomplete","off");
             $("#ip").attr("data-provide", "typeahead");
             $("#ip").attr("data-source", '{{ ips|safe}}');
             $("#ip").attr("data-items", "5");
