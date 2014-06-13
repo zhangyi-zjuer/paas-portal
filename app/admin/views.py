@@ -41,7 +41,7 @@ def machines():
         machine.format_memory = format_num(machine.memory)
         ips.add(machine.ip)
 
-    ips = '["' + '",'.join(ips) + '"]'
+    ips = '["' + '","'.join(ips) + '"]'
 
     return render_template('machine.html', machines=machines, form=form, ips=ips)
 
