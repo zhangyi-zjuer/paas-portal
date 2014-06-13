@@ -36,6 +36,8 @@ def machines():
 
     for machine in machines:
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
+        machine.format_disk = format_num(machine.disk)
+        machine.format_memory = format_num(machine.memory)
 
     return render_template('machine.html', machines=machines, form=form)
 

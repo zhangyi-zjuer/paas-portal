@@ -36,20 +36,20 @@
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.basic.cpu_free_num }}
+                        {{ machine.basic.cpu_free_num or machine.cpu }}
                     </td>
 
 
                     <td class="mid-td">
-                        {{ machine.basic.memory }}
+                        {{ machine.format_memory }}
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.basic.memory_free }}
+                        {{ machine.basic.memory_free or machine.format_memory }}
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.basic.instance_num }}
+                        {{ machine.basic.instance_num or 0}}
                     </td>
 
                     <td class="mid-td">
@@ -66,6 +66,6 @@
         </table>
     </div>
 
-    
+
 
 {% endblock %}
