@@ -13,28 +13,28 @@ mod = Blueprint('api', __name__, template_folder='templates', static_folder='sta
 @mod.route('/instance/shutdown')
 @login_required
 def shutdown_instance():
-    app_id = request.args.get('app_id')
-    instance_id = request.args.get('instance_id')
-
-    url = PAAS_HOST + '/console/api/instance?op=shutdown&appId=' + app_id + '&instanceId=' + instance_id
-
-    response = auth_request(url)
-    print response.read()
-
-    time.sleep(0.5)
-    return redirect(url_for('admin.instances'))
+    return instance_op('shutdown')
 
 
 @mod.route('/instance/restart')
 @login_required
 def restart_instance():
+    return instance_op('start')
+
+
+def instance_op(op):
     app_id = request.args.get('app_id')
     instance_id = request.args.get('instance_id')
+    type = request.args.get('type')
+    value = request.args.get('value')
 
-    url = PAAS_HOST + '/console/api/instance?op=start&appId=' + app_id + '&instanceId=' + instance_id
-
+    url = PAAS_HOST + '/console/api/instance?op=' + op + '&appId=' + app_id + '&instanceId=' + instance_id
     response = auth_request(url)
-    print response.read()
+    print response
 
     time.sleep(0.5)
-    return redirect(url_for('admin.instances'))
+
+    if value:
+        return redirect(url_for('admin.instances', type=type, value=value))
+
+    return redirect(url_for('admin.instances', all="true"))

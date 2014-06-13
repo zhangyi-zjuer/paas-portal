@@ -78,7 +78,7 @@
                             {% if instance.status in [200,502,503,504] %}
                                 <td class="mid-td">
                                     <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, instance_id= instance.instance_id) }}'
+                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
                                        onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
                                 </td>
                             {% endif %}
@@ -86,7 +86,7 @@
                             {% if instance.status in [500,505] %}
                                 <td class="mid-td">
                                     <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id, instance_id= instance.instance_id) }}'
+                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id, instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
                                        onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>Start</a>
                                 </td>
                             {% endif %}

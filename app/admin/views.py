@@ -87,16 +87,25 @@ def show_agent(machine_id):
 @mod.route('/instances', methods=['GET', 'POST'])
 def instances():
     form = InstanceSearchForm()
+
+    type = request.args.get('type')
+    value = request.args.get('value')
+
     if request.method == 'GET':
-        print "all: ", request.args.get("all")
         if request.args.get("all"):
             query = Instance.query
         else:
             query = None
 
-    else:
-        type = form.type.data
-        value = form.value.data
+    if request.method == 'POST' or value:
+        if request.method == 'GET':
+            type = int(type)
+            form.type.data = type
+            form.value.data = value
+        else:
+            type = form.type.data
+            value = form.value.data
+
         if value:
             if type == 0:
                 query = Instance.query.filter(Instance.agent_ip == value)
