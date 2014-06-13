@@ -107,19 +107,18 @@
 
     <script type="text/javascript">
         function setDataSource() {
-            $("#value").attr("data-provide", "typeahead");
             $("#value").attr("data-source", '{{ app_ids|safe}}');
-            $("#value").attr("data-items", "5");
             $("#value").attr("placeholder", "Enter App ID and Version")
         }
 
         function clearDataSource() {
-            $("#value").attr("data-provide", "");
-            $("#value").attr("data-source", '');
+            $("#value").attr("data-source", '{{ ips|safe}}');
             $("#value").attr("placeholder", "Enter Machine IP")
         }
 
         $(document).ready(function () {
+            $("#value").attr("data-provide", "typeahead");
+            $("#value").attr("data-items", "5");
             $("#value").attr("autocomplete", "off");
             setDataSource();
         });
