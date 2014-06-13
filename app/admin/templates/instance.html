@@ -101,6 +101,7 @@
         function setDataSource() {
             $("#value").attr("data-provide", "typeahead");
             $("#value").attr("data-source", '{{ app_ids|safe}}');
+            $("#value").attr("data-items", "5");
         }
 
         function clearDataSource() {

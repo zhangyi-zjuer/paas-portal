@@ -113,6 +113,7 @@ def instances():
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
 
     app_ids = '["' + '","'.join(app_id_set) + '"]'
+
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids)
 
 
