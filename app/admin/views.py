@@ -26,7 +26,6 @@ def machines():
     form = MachineSearchForm()
     if request.method == 'GET':
         machines = Machine.query.all()
-
     else:
         ip = form.ip.data.strip()
         if not ip:
@@ -89,7 +88,12 @@ def show_agent(machine_id):
 def instances():
     form = InstanceSearchForm()
     if request.method == 'GET':
-        query = Instance.query
+        print "all: ", request.args.get("all")
+        if request.args.get("all"):
+            query = Instance.query
+        else:
+            query = None
+
     else:
         type = form.type.data
         value = form.value.data
@@ -104,7 +108,10 @@ def instances():
         else:
             query = Instance.query
 
-    instances = query.all()
+    if query:
+        instances = query.all()
+    else:
+        instances = []
 
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
