@@ -67,6 +67,11 @@
     {{ fixes.ie8() }}
 {% endblock %}
 
+{% block scripts %}
+    {{super()}}
+<script src="{{url_for('static', filename='js/bootstrap3-typeahead.js')}}"></script>
+{% endblock %}
+
 {% block styles %}
     {{ super() }}
     <link rel="stylesheet"
