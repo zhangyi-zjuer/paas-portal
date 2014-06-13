@@ -128,8 +128,7 @@ def instances():
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
 
     app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
-    ips = '["' + '","'.join([machine.ip for machine in Machine.query.all()]) + '"]'
-    return render_template("instance.html", instances=instances, form=form, app_ids=app_ids, ips=ips)
+    return render_template("instance.html", instances=instances, form=form, app_ids=app_ids)
 
 
 @mod.route('/networks')
