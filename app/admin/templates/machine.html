@@ -65,6 +65,15 @@
         </table>
     </div>
 
+{% endblock %}
 
-
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ip").attr("data-provide", "typeahead");
+            $("#ip").attr("data-source", '{{ ips|safe}}');
+            $("#value").attr("data-items", "5");
+        });
+    </script>
 {% endblock %}

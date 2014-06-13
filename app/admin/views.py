@@ -34,12 +34,16 @@ def machines():
         else:
             machines = Machine.query.filter(Machine.ip == ip).all()
 
+    ips = set()
     for machine in machines:
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
         machine.format_disk = format_num(machine.disk)
         machine.format_memory = format_num(machine.memory)
+        ips.add(machine.ip)
 
-    return render_template('machine.html', machines=machines, form=form)
+    ips = '["' + '",'.join(ips) + '"]'
+
+    return render_template('machine.html', machines=machines, form=form, ips=ips)
 
 
 @mod.route('/machine/add', methods=['GET', 'POST'])

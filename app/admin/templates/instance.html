@@ -97,10 +97,7 @@
 {% block scripts %}
     {{ super() }}
 
-
-
     <script type="text/javascript">
-
         function setDataSource() {
             $("#value").attr("data-provide", "typeahead");
             $("#value").attr("data-source", '{{ app_ids|safe}}');
