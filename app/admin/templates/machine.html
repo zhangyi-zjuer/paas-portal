@@ -48,7 +48,12 @@
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.basic.instance_num or 0 }}
+                        {% if machine.basic.instance_num %}
+                            <a href="{{ url_for('admin.instances', type='0', value=machine.ip) }}">{{ machine.basic.instance_num }}</a>
+                        {% else %}
+                            0
+                        {% endif %}
+
                     </td>
 
                     <td class="mid-td">
@@ -71,7 +76,7 @@
     {{ super() }}
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#ip").attr("autocomplete","off");
+            $("#ip").attr("autocomplete", "off");
             $("#ip").attr("data-provide", "typeahead");
             $("#ip").attr("data-source", '{{ ips|safe}}');
             $("#ip").attr("data-items", "5");
