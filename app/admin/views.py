@@ -214,7 +214,7 @@ def get_agent_info(agent):
 
         for instance in agent['instances']:
             instances.append({
-                'id': instance['id'],
+                'id': instance['id'] if 'id' in instance else '',
                 'ip': instance['ip'],
                 'status': INSTANCE_STATUA[instance['status']],
                 'token': instance['token'],
