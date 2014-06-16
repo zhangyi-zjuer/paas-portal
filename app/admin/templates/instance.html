@@ -41,6 +41,7 @@
                         <td class="mid-td">
                             {{ instance.instance_group_id }}
                         </td>
+
                         <td class="mid-td">
                             {{ instance.app_id }}
                         </td>
@@ -53,10 +54,10 @@
                             {{ instance.instance_ip }}
                         </td>
 
-
                         <td class="mid-td">
                             {{ instance.instance_port }}
                         </td>
+
                         <td class="mid-td">
                             {% if instance.agent_ip %}
                                 <a href="{{ url_for('admin.show_agent', machine_id = instance.machine_id) }}">{{ instance.agent_ip }}</a>
@@ -66,12 +67,7 @@
                         </td>
 
                         <td class="mid-td">
-                            {% if instance.status == 200 %}
-                                {{ instance.status_desc }}
-                            {% else %}
-                                <font color="red">{{ instance.status_desc }}</font>
-                            {% endif %}
-
+                            <font color="{{ '' if instance.status == 200 else 'red' }}">{{ instance.status_desc }}</font>
                         </td>
                         {% if g.user.is_authenticated() %}
 
