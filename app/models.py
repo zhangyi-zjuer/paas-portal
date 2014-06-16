@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-3-14.
-from sqlalchemy import Column, INTEGER, CHAR, TEXT, BIGINT, SMALLINT, VARCHAR
+from sqlalchemy import Column, INTEGER, CHAR, TEXT, BIGINT, SMALLINT, VARCHAR, TIMESTAMP
 
 from database import Base
 
@@ -40,8 +40,8 @@ class AppVersion(Base):
     app_id = Column('app_id', VARCHAR(length=50), nullable=False)
     version = Column('version', VARCHAR(length=250), nullable=False)
     app_file_id = Column('app_file_id', BIGINT, nullable=False)
-    creation_date = Column('creation_date', nullable=False)
-    last_modified_date = Column('last_modified_date', nullable=False)
+    creation_date = Column('creation_date', TIMESTAMP, nullable=False)
+    last_modified_date = Column('last_modified_date', TIMESTAMP, nullable=False)
 
 
 class Instance(Base):
@@ -58,7 +58,7 @@ class Instance(Base):
     instance_port = Column('instance_port', INTEGER)
     type = Column('type', INTEGER, nullable=False)
     status = Column('status', INTEGER, nullable=False)
-    creation_date = Column('creation_date', nullable=False)
-    last_modified_date = Column('last_modified_date', nullable=False)
+    creation_date = Column('creation_date', TIMESTAMP, nullable=False)
+    last_modified_date = Column('last_modified_date', TIMESTAMP, nullable=False)
 
 
