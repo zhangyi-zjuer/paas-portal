@@ -8,7 +8,6 @@
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
-
                 <p class="navbar-brand">Portal</p>
             </div>
             <div class="navbar-collapse collapse">
@@ -33,12 +32,8 @@
                     </form>
                 {% endif %}
             </div>
-
-
         </div>
-
     </div>
-
 
     <div class="container">
         <div class="masthead">
@@ -54,10 +49,7 @@
             {% endwith %}
         </div>
     </div>
-
 {% endblock %}
-
-
 
 {% block content %}
 {% endblock %}
@@ -68,8 +60,8 @@
 {% endblock %}
 
 {% block scripts %}
-    {{super()}}
-<script src="{{url_for('static', filename='js/bootstrap3-typeahead.js')}}"></script>
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/bootstrap3-typeahead.js') }}"></script>
 {% endblock %}
 
 {% block styles %}
