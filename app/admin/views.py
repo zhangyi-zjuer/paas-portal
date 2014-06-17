@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
 import re
 
 from flask import Blueprint, redirect, url_for, render_template, request
@@ -9,8 +8,8 @@ from flask.ext.login import login_required
 from app.models import *
 from app.admin.forms import *
 from app.database import DbUtil
-from app.paasUtil import format_num
-from config import GROUP_MODE, INSTANCE_STATUA, INSTANCE_STATUA_1
+from app.paasUtil import format_num, get_agent_info
+from config import INSTANCE_STATUA_1
 
 
 mod = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -184,60 +183,4 @@ def get_form_from_db(obj, form):
     return form
 
 
-def get_agent_info(agent):
-    if agent and len(agent) > 10:
-        agent = json.loads(agent)
 
-        basic = {
-            'cpu': agent['cpu'],
-            'memory': format_num(agent['memory']['total']),
-            'memory_free': format_num(agent['memory']['free']),
-            'disk': format_num(agent['disk']['total']),
-            'disk_free': format_num(agent['disk']['free']),
-            'ip': agent['ip']
-        }
-
-        cpu_groups = []
-        m_cores = {}
-        for group in agent['groups']:
-            cpu_groups.append({
-                'group_id': group['groupId'],
-                'mode': GROUP_MODE[group['mode']],
-                'max_instance': group['maxInstance'],
-                'core': group['cores'],
-                'core_str': ', '.join(map(str, group['cores']))
-            })
-
-            m_cores[group['groupId']] = ', '.join(map(str, group['cores']))
-
-        instances = []
-
-        for instance in agent['instances']:
-            instances.append({
-                'id': instance['id'] if 'id' in instance else '',
-                'ip': instance['ip'],
-                'status': INSTANCE_STATUA[instance['status']],
-                'token': instance['token'],
-                'group_id': instance['groupId'],
-                'cores': m_cores[instance['groupId']],
-                'app_id': instance['app']['appId'],
-                'app_version': instance['app']['appVersion'],
-                'app_level': instance['app']['appLevel'],
-                'cpu': instance['app']['cpuNum'],
-                'cpu_mode': GROUP_MODE[instance['app']['cpuMode']],
-                'memory': format_num(instance['app']['memorySize']),
-                'disk': format_num(instance['app']['diskSize'])
-
-            })
-
-        basic['instance_num'] = len(instances)
-
-        core_free = range(0, agent['cpu'])
-        for group in cpu_groups:
-            core_free = [core for core in core_free if core not in group['core']]
-
-        basic['cpu_free'] = ', '.join(map(str, core_free))
-        basic['cpu_free_num'] = len(core_free)
-
-        return basic, instances, cpu_groups
-    return None, None, None
