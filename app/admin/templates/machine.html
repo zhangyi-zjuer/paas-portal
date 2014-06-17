@@ -14,9 +14,10 @@
                 <th class="mid-td" style="width: 10%">Cpu Free</th>
                 <th class="mid-td" style="width: 10%">Memory</th>
                 <th class="mid-td" style="width: 10%">Memory Free</th>
-                <th class="mid-td" style="width: 10%">Instance Num</th>
+                <th class="mid-td" style="width: 10%">Instance</th>
+                <th class="mid-td" style="width: 15%">Zone</th>
                 <th class="mid-td" style="width: 5%">Network</th>
-                <th class="mid-td" style="width: 20%"></th>
+                <th class="mid-td" style="width: 12%"></th>
             </tr>
             </thead>
             <tbody>
@@ -52,6 +53,10 @@
                         {% else %}
                             0
                         {% endif %}
+                    </td>
+
+                    <td class="mid-td">
+                        {{ machine.idc or 'None' }}-{{ machine.switcher or 'None' }}-{{ machine.frame or 'None' }}
                     </td>
 
                     <td class="mid-td">
