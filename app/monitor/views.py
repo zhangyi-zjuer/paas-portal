@@ -7,6 +7,8 @@ from flask.ext.login import login_required
 from util import get_cat_error_report
 from models import CatServerNameMap, session
 
+from config import PAAS_HOST_PREFIX
+
 
 mod = Blueprint('monitor', __name__, template_folder='templates', static_folder='static')
 
@@ -20,10 +22,19 @@ def index():
     form.type.choices = [('all', 'All Server')] + [(ele.cat_name, ele.cat_name) for ele in
                                                    CatServerNameMap.query.all()]
     servers = []
+    percent = 0.1
     if request.method == 'POST':
         type = form.type.data
         date = form.date.data
         hour = form.hour.data
+        percent = form.percent.data or 0.1
+
+        try:
+            percent = float(percent)
+        except:
+            flash("Percent Must be float!")
+            return render_template('index.html', servers=servers, form=form)
+
         if hour == -1:
             hour = ''
         elif hour < 10:
@@ -39,7 +50,7 @@ def index():
                 error_report = get_cat_error_report(server_name.cat_name, time)
                 servers.append({"name": server_name.cat_name, "report": error_report})
 
-    return render_template('index.html', servers=servers, form=form)
+    return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 
 @mod.route('/cat', methods=['GET', 'POST'])
@@ -80,7 +91,7 @@ def del_cat(id):
 def get_not_selected():
     from app.models import AppVersion
 
-    servers = sorted([ele.app_id for ele in AppVersion.query.all()])
+    servers = [ele.app_id for ele in AppVersion.query.all()]
     cats = [ele.real_name for ele in CatServerNameMap.query.all()]
 
     left = set()
@@ -88,8 +99,58 @@ def get_not_selected():
         if not server in cats:
             left.add((server, server))
 
-    return left
+    return sorted(left, key=lambda d: d[0])
 
+
+def format_report(servers, percent):
+    for server in servers:
+        report = server['report']
+        paas_total_error = 0
+        kvm_total_error = 0
+
+        paas_errors = set()
+        kvm_errors = set()
+
+        for machine in report:
+            ip = machine['ip']
+            total_error = machine['total']
+            detail = machine['detail']
+
+            errors = set()
+            for error in detail:
+                errors.add(error['status'])
+
+            if ip.startswith(PAAS_HOST_PREFIX):
+                paas_total_error += total_error
+                paas_errors |= errors
+            else:
+                kvm_total_error += total_error
+                kvm_errors |= errors
+
+        is_total_overload = False
+        if (kvm_total_error == 0 and paas_total_error > 0) or (
+                    paas_total_error - kvm_total_error) * 1.0 / kvm_total_error > percent:
+            is_total_overload = True
+
+        error_overload = paas_errors - kvm_errors
+
+        print error_overload
+
+        for machine in report:
+            if machine['ip'].startswith(PAAS_HOST_PREFIX):
+                print machine['ip']
+                if is_total_overload:
+                    machine['total_error_overload'] = True
+                for error in machine['detail']:
+                    print error['status']
+                    if error['status'] in error_overload:
+                        print machine['ip'], error['status']
+                        error['error_overload'] = True
+
+    import json
+
+    print json.dumps(servers)
+    return servers
 
 
 

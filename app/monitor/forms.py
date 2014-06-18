@@ -5,7 +5,6 @@ from flask_wtf import Form
 from wtforms import TextField, SubmitField, SelectField
 from wtforms.validators import Required
 
-from models import CatServerNameMap
 from util import *
 
 
@@ -13,6 +12,7 @@ class MonitorForm(Form):
     date = TextField('type', description='Enter Date', default=today())
     type = SelectField('type')
     hour = SelectField('type', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)), default=-1)
+    percent = TextField('percent', description='Percent (default 0.1)')
     submit_button = SubmitField('OK')
 
 

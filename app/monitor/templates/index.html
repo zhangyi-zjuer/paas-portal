@@ -4,7 +4,7 @@
         <br/>
 
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
             </div>
             <div class="col-md-1">
@@ -28,20 +28,20 @@
                     {% for report in server.report %}
                         <tr>
                             <td class="mid-td">
-                                {{ report.ip }}
+                                <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
                             </td>
                             <td class="mid-td">
                                 <table class="table table-bordered">
                                     <tbody>
 
-                                    {% for error in report.detail.iteritems() %}
+                                    {% for error in report.detail %}
                                         <tr>
                                             <td style="width: 70%">
-                                                {{ error[0] }}
+                                                <font color="{{ 'red' if error.error_overload else '' }}">{{ error.status }}</font>
                                             </td>
 
                                             <td class="mid-left" style="width: 30%">
-                                                {{ error[1] }}
+                                                {{ error.num }}
                                             </td>
                                         </tr>
                                     {% endfor %}

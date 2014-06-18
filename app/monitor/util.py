@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ET
 import urllib2
 import time
 
+from config import CAT_HOST
+
 
 def parse_report(xml_str):
     root = ET.fromstring(xml_str)
@@ -12,18 +14,18 @@ def parse_report(xml_str):
     error_reports = []
     for machine in machines:
         ip = machine.get('ip')
-        errors = {}
+        errors = []
         total_error_num = 0
         for error in machine.findall("entry[@type='error']"):
             error_num = int(error.find('duration').get('count'))
-            errors[error.get('status')] = error_num
+            errors.append({"status": error.get('status'), 'num': error_num})
             total_error_num += error_num
         error_reports.append({"ip": ip, "detail": errors, "total": total_error_num})
     return error_reports
 
 
 def get_cat_error_report(domain, time):
-    url = 'http://10.1.1.167/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (domain, time)
+    url = 'http://%s/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (CAT_HOST, domain, time)
     request = urllib2.urlopen(url)
     return parse_report(request.read())
 

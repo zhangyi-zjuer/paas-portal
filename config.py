@@ -5,6 +5,8 @@ BOOTSTRAP_SERVE_LOCAL = True
 SECRET_KEY = 'Bon-Jovi-Have-a-Nice-Day'
 
 PAAS_HOST = 'http://127.0.0.1:2667'
+PAAS_HOST_PREFIX = '10.1.'
+CAT_HOST = '10.1.1.167'
 
 BasicAuth = {
     'username': 'paas',
@@ -47,3 +49,4 @@ INSTANCE_STATUA_1 = {
     506: "REMOVE_FAIL",
 
 }
+
