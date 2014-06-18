@@ -13,7 +13,7 @@ class MonitorForm(Form):
     type = SelectField('type')
     hour = SelectField('type', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)), default=-1)
     percent = TextField('percent', description='Percent (default 0.1)')
-    submit_button = SubmitField('OK')
+    submit_button = SubmitField('Search')
 
 
 class CatMapForm(Form):

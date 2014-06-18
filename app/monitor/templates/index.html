@@ -4,7 +4,7 @@
         <br/>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
             </div>
             <div class="col-md-1">
@@ -31,7 +31,7 @@
                                 <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
                             </td>
                             <td class="mid-td">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-condense">
                                     <tbody>
 
                                     {% for error in report.detail %}
