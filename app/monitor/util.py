@@ -23,7 +23,7 @@ def parse_report(xml_str):
 
 
 def get_cat_error_report(domain, time):
-    url = 'http://cat.dianpingoa.com/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (domain, time)
+    url = 'http://10.1.1.167/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (domain, time)
     request = urllib2.urlopen(url)
     return parse_report(request.read())
 
