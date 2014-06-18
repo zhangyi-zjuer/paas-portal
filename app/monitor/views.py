@@ -108,6 +108,9 @@ def format_report(servers, percent):
         paas_total_error = 0
         kvm_total_error = 0
 
+        kvm_machine_num = 0
+        paas_machine_num = 0
+
         paas_errors = set()
         kvm_errors = set()
 
@@ -121,15 +124,21 @@ def format_report(servers, percent):
                 errors.add(error['status'])
 
             if ip.startswith(PAAS_HOST_PREFIX):
+                paas_machine_num += 1
                 paas_total_error += total_error
                 paas_errors |= errors
             else:
+                kvm_machine_num += 1
                 kvm_total_error += total_error
                 kvm_errors |= errors
 
+        if paas_machine_num == 0 or kvm_machine_num == 0:
+            return servers
+
         is_total_overload = False
         if (kvm_total_error == 0 and paas_total_error > 0) or (
-                    paas_total_error - kvm_total_error) * 1.0 / kvm_total_error > percent:
+                            paas_total_error * 1.0 / paas_machine_num - kvm_total_error * 1.0 / kvm_machine_num) / (
+                        kvm_total_error * 1.0 / kvm_machine_num) > percent:
             is_total_overload = True
 
         error_overload = paas_errors - kvm_errors
@@ -142,14 +151,9 @@ def format_report(servers, percent):
                 if is_total_overload:
                     machine['total_error_overload'] = True
                 for error in machine['detail']:
-                    print error['status']
                     if error['status'] in error_overload:
-                        print machine['ip'], error['status']
                         error['error_overload'] = True
 
-    import json
-
-    print json.dumps(servers)
     return servers
 
 
