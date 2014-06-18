@@ -8,13 +8,14 @@
                 {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
             </div>
             <div class="col-md-1">
-                <a class="btn btn-success" type="button" href='{{ url_for("monitor.cat_name", all="true") }}'>Edit Server Name</a>
+                <a class="btn btn-success" type="button" href='{{ url_for("monitor.cat_name", all="true") }}'>Edit
+                    Server Name</a>
             </div>
         </div>
         {% if servers %}
             {% for server in servers %}
                 <hr/>
-                <h2>{{ server.name }}</h2>
+                <h2><a href="{{ server.cat_link }}">{{ server.name }}</a></h2>
                 <table class="table table-bordered">
                     <thead>
                     <tr>

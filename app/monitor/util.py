@@ -8,7 +8,7 @@ import time
 from config import CAT_HOST
 
 
-def parse_report(xml_str):
+def parse_report(xml_str, domain):
     root = ET.fromstring(xml_str)
     machines = root.findall('report/machine')
     error_reports = []
@@ -20,14 +20,16 @@ def parse_report(xml_str):
             error_num = int(error.find('duration').get('count'))
             errors.append({"status": error.get('status'), 'num': error_num})
             total_error_num += error_num
+
         error_reports.append({"ip": ip, "detail": errors, "total": total_error_num})
+
     return error_reports
 
 
 def get_cat_error_report(domain, time):
     url = 'http://%s/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (CAT_HOST, domain, time)
     request = urllib2.urlopen(url)
-    return parse_report(request.read())
+    return parse_report(request.read(), domain)
 
 
 def today():

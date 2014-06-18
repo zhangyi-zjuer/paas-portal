@@ -7,7 +7,7 @@ from flask.ext.login import login_required
 from util import get_cat_error_report
 from models import CatServerNameMap, session
 
-from config import PAAS_HOST_PREFIX
+from config import PAAS_HOST_PREFIX, CAT_HOST
 
 
 mod = Blueprint('monitor', __name__, template_folder='templates', static_folder='static')
@@ -23,11 +23,13 @@ def index():
                                                    CatServerNameMap.query.all()]
     servers = []
     percent = 0.1
+    only_overload = False
     if request.method == 'POST':
         type = form.type.data
         date = form.date.data
         hour = form.hour.data
         percent = form.percent.data or 0.1
+        only_overload = form.only_overload.data
 
         try:
             percent = float(percent)
@@ -48,9 +50,10 @@ def index():
         else:
             for server_name in CatServerNameMap.query.all():
                 error_report = get_cat_error_report(server_name.cat_name, time)
-                servers.append({"name": server_name.cat_name, "report": error_report})
+                servers.append({"name": server_name.cat_name, "report": error_report,
+                                "cat_link": 'http://%s/cat/r/p?op=view&domain=%s' % (CAT_HOST, server_name.cat_name)})
 
-    return render_template('index.html', servers=format_report(servers, percent), form=form)
+    return render_template('index.html', servers=format_report(servers, percent, only_overload), form=form)
 
 
 @mod.route('/cat', methods=['GET', 'POST'])
@@ -102,7 +105,7 @@ def get_not_selected():
     return sorted(left, key=lambda d: d[0])
 
 
-def format_report(servers, percent):
+def format_report(servers, percent, only_overload):
     for server in servers:
         report = server['report']
         paas_total_error = 0
@@ -113,6 +116,7 @@ def format_report(servers, percent):
 
         paas_errors = set()
         kvm_errors = set()
+
 
         for machine in report:
             ip = machine['ip']
@@ -133,7 +137,7 @@ def format_report(servers, percent):
                 kvm_errors |= errors
 
         if paas_machine_num == 0 or kvm_machine_num == 0:
-            return servers
+            continue
 
         is_total_overload = False
         if (kvm_total_error == 0 and paas_total_error > 0) or (kvm_total_error > 0 and (
@@ -150,6 +154,27 @@ def format_report(servers, percent):
                 for error in machine['detail']:
                     if error['status'] in error_overload:
                         error['error_overload'] = True
+
+    new_servers = []
+    if only_overload:
+        print only_overload
+        for server in servers:
+            need_add = False
+            for machine in server['report']:
+                if 'total_error_overload' in machine:
+                    need_add = True
+                    break
+                for error in machine['detail']:
+                    if 'error_overload' in error:
+                        need_add = True
+                        break
+                if need_add:
+                    break
+
+            if need_add:
+                new_servers.append(server)
+
+        servers = new_servers
 
     return servers
 

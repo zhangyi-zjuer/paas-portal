@@ -2,7 +2,7 @@
 # Created by zhangyi on 14-6-18.
 
 from flask_wtf import Form
-from wtforms import TextField, SubmitField, SelectField
+from wtforms import TextField, SubmitField, SelectField, BooleanField
 from wtforms.validators import Required
 
 from util import *
@@ -13,6 +13,7 @@ class MonitorForm(Form):
     type = SelectField('type')
     hour = SelectField('type', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)), default=-1)
     percent = TextField('percent', description='Percent (default 0.1)')
+    only_overload = BooleanField('overload', description="Only Overload", default=False)
     submit_button = SubmitField('Search')
 
 
