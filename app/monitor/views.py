@@ -136,9 +136,10 @@ def format_report(servers, percent):
             return servers
 
         is_total_overload = False
-        if (kvm_total_error == 0 and paas_total_error > 0) or (
-                            paas_total_error * 1.0 / paas_machine_num - kvm_total_error * 1.0 / kvm_machine_num) / (
-                        kvm_total_error * 1.0 / kvm_machine_num) > percent:
+        if (kvm_total_error == 0 and paas_total_error > 0) or \
+                                ( kvm_total_error > 0 and
+                                                  paas_total_error * 1.0 / paas_machine_num - kvm_total_error * 1.0 / kvm_machine_num) / (
+                                        kvm_total_error * 1.0 / kvm_machine_num) > percent:
             is_total_overload = True
 
         error_overload = paas_errors - kvm_errors
