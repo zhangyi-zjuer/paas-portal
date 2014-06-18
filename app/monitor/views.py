@@ -80,7 +80,7 @@ def del_cat(id):
 def get_not_selected():
     from app.models import AppVersion
 
-    servers = [ele.app_id for ele in AppVersion.query.all()]
+    servers = sorted([ele.app_id for ele in AppVersion.query.all()])
     cats = [ele.real_name for ele in CatServerNameMap.query.all()]
 
     left = set()
