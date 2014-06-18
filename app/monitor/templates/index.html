@@ -14,53 +14,57 @@
         </div>
         {% if servers %}
             {% for server in servers %}
-                <hr/>
-                <h2><a href="{{ server.cat_link }}">{{ server.name }}</a></h2>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th class="mid-td" style="width: 20%">IP</th>
-                        <th class="mid-td" style="width: 70%">Detail</th>
-                        <th class="mid-td" style="width: 10%">Total</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for report in server.report %}
+                <div name="{{ server.overload }}">
+                    <hr/>
+                    <h2><a href="{{ server.cat_link }}">{{ server.name }}</a></h2>
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td class="mid-td">
-                                <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
-                            </td>
-                            <td class="mid-td">
-                                <table class="table table-bordered table-condense">
-                                    <tbody>
-
-                                    {% for error in report.detail %}
-                                        <tr>
-                                            <td style="width: 70%">
-                                                <font color="{{ 'red' if error.error_overload else '' }}">{{ error.status }}</font>
-                                            </td>
-
-                                            <td class="mid-left" style="width: 30%">
-                                                {{ error.num }}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="mid-td">
-                                {{ report.total }}
-                            </td>
+                            <th class="mid-td" style="width: 20%">IP</th>
+                            <th class="mid-td" style="width: 70%">Detail</th>
+                            <th class="mid-td" style="width: 10%">Total</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                        {% for report in server.report %}
+                            <tr>
+                                <td class="mid-td">
+                                    <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
+                                </td>
+                                <td class="mid-td">
+                                    <table class="table table-bordered table-condense">
+                                        <tbody>
+
+                                        {% for error in report.detail %}
+                                            <tr>
+                                                <td style="width: 70%">
+                                                    <font color="{{ 'red' if error.error_overload else '' }}">{{ error.status }}</font>
+                                                </td>
+
+                                                <td class="mid-left" style="width: 30%">
+                                                    {{ error.num }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td class="mid-td">
+                                    {{ report.total }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -72,5 +76,16 @@
             $("#date").attr("autocomplete", "off");
         });
         $('#date').datepicker();
+
+
+        $("#only_overload").click(function () {
+            var isChecked = $(this).is(":checked");
+
+            if (isChecked) {
+                $("div[name=normal]").hide();
+            } else {
+                $("div[name=normal]").show();
+            }
+        });
     </script>
 {% endblock %}

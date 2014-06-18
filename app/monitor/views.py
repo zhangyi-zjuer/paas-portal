@@ -29,7 +29,6 @@ def index():
         date = form.date.data
         hour = form.hour.data
         percent = form.percent.data or 0.1
-        only_overload = form.only_overload.data
 
         try:
             percent = float(percent)
@@ -51,9 +50,11 @@ def index():
             for server_name in CatServerNameMap.query.all():
                 error_report = get_cat_error_report(server_name.cat_name, time)
                 servers.append({"name": server_name.cat_name, "report": error_report,
-                                "cat_link": 'http://%s/cat/r/p?op=view&domain=%s' % (CAT_HOST, server_name.cat_name)})
+                                "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
+                                    CAT_HOST, server_name.cat_name, time)})
 
-    return render_template('index.html', servers=format_report(servers, percent, only_overload), form=form)
+    form.only_overload.data = False
+    return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 
 @mod.route('/cat', methods=['GET', 'POST'])
@@ -105,7 +106,7 @@ def get_not_selected():
     return sorted(left, key=lambda d: d[0])
 
 
-def format_report(servers, percent, only_overload):
+def format_report(servers, percent):
     for server in servers:
         report = server['report']
         paas_total_error = 0
@@ -116,7 +117,6 @@ def format_report(servers, percent, only_overload):
 
         paas_errors = set()
         kvm_errors = set()
-
 
         for machine in report:
             ip = machine['ip']
@@ -151,30 +151,15 @@ def format_report(servers, percent, only_overload):
             if machine['ip'].startswith(PAAS_HOST_PREFIX):
                 if is_total_overload:
                     machine['total_error_overload'] = True
+                    server['overload'] = 'overload'
                 for error in machine['detail']:
                     if error['status'] in error_overload:
                         error['error_overload'] = True
+                        server['overload'] = 'overload'
 
-    new_servers = []
-    if only_overload:
-        print only_overload
-        for server in servers:
-            need_add = False
-            for machine in server['report']:
-                if 'total_error_overload' in machine:
-                    need_add = True
-                    break
-                for error in machine['detail']:
-                    if 'error_overload' in error:
-                        need_add = True
-                        break
-                if need_add:
-                    break
-
-            if need_add:
-                new_servers.append(server)
-
-        servers = new_servers
+    for server in servers:
+        if 'overload' not in server:
+            server['overload'] = 'normal'
 
     return servers
 
