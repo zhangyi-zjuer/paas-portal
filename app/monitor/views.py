@@ -143,11 +143,8 @@ def format_report(servers, percent):
 
         error_overload = paas_errors - kvm_errors
 
-        print error_overload
-
         for machine in report:
             if machine['ip'].startswith(PAAS_HOST_PREFIX):
-                print machine['ip']
                 if is_total_overload:
                     machine['total_error_overload'] = True
                 for error in machine['detail']:
