@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-6-4.
 from app.dbUtil import generate_db
-from config import user_db_url
+from config import local_db_url
 from sqlalchemy import CHAR, Column
 
-user_engine, user_session, User_Base = generate_db(user_db_url)
+user_engine, user_session, User_Base = generate_db(local_db_url)
 
 
 class User(User_Base):

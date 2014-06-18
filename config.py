@@ -15,7 +15,7 @@ BasicAuth = {
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 db_url = 'mysql://root:root@localhost/paas'
-user_db_url = 'sqlite:///' + os.path.join(basedir, 'user.db')
+local_db_url = 'sqlite:///' + os.path.join(basedir, 'user.db')
 
 GROUP_MODE = {
     0: "Exclusive",

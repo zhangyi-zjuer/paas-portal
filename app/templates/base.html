@@ -15,6 +15,9 @@
                     <li><a href="{{ url_for("admin.machines") }}">Machine</a></li>
                     <li><a href="{{ url_for("admin.networks") }}">Network</a></li>
                     <li><a href="{{ url_for("admin.instances") }}">Instances</a></li>
+                    {% if g.user.is_authenticated() %}
+                        <li><a href="{{ url_for("monitor.index") }}">Monitor</a></li>
+                    {% endif %}
                 </ul>
                 {% if g.user.is_authenticated() %}
                     <ul class="nav navbar-nav navbar-right">
@@ -62,6 +65,7 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/bootstrap3-typeahead.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
 {% endblock %}
 
 {% block styles %}

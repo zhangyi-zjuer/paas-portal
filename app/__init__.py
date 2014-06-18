@@ -40,7 +40,9 @@ import views
 from admin.views import mod as admin_module
 from user.views import mod as user_module
 from api.views import mod as api_module
+from monitor.views import mod as monitor_module
 
 app.register_blueprint(admin_module, url_prefix='/admin')
 app.register_blueprint(user_module, url_prefix='/user')
 app.register_blueprint(api_module, url_prefix='/api')
+app.register_blueprint(monitor_module, url_prefix='/monitor')

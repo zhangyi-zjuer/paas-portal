@@ -2,11 +2,11 @@
 # Created by zhangyi on 14-3-14.
 
 from app.user.models import *
+from app.monitor.models import init_db as init_monitor_db
 import hashlib
 
 
 def add_user(username, password):
-
     if len(User.query.filter(User.username == username).all()) > 0:
         print username + " already exisits"
         return
@@ -19,6 +19,7 @@ def add_user(username, password):
     user_session.commit()
 
     print 'add user: ' + username
+
 
 def del_user(username):
     users = User.query.filter(User.username == username).all()
@@ -35,6 +36,7 @@ def setup():
 
     if 'y' in r:
         init_db()
+        init_monitor_db()
         print 'Set up Successfully'
     else:
         print 'Nothing Changed'
