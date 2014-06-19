@@ -16,49 +16,55 @@
             {% for server in servers %}
                 <div name="{{ server.overload }}">
                     <hr/>
-                    <h2><a href="{{ server.cat_link }}" target="_blank">{{ server.name }}</a></h2>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="mid-td" style="width: 20%">IP</th>
-                            <th class="mid-td" style="width: 70%">Detail</th>
-                            <th class="mid-td" style="width: 10%">Total</th>
-                        </tr>
-                        </thead>
+                    <h2><a href="{{ server.cat_link }}" target="_blank">{{ server.name }}</a>
+                        {% if not server.report %}
+                            <font color="red">-(Not Found in CAT)</font>
+                        {% endif %}
+                    </h2>
+                    {% if server.report %}
 
-                        <tbody>
-                        {% for report in server.report %}
+
+                        <table class="table table-bordered">
+                            <thead>
                             <tr>
-                                <td class="mid-td">
-                                    <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
-                                </td>
-                                <td class="mid-td">
-                                    <table class="table table-bordered table-condense">
-                                        <tbody>
-
-                                        {% for error in report.detail %}
-                                            <tr>
-                                                <td style="width: 70%">
-                                                    <font color="{{ 'red' if error.error_overload else '' }}">{{ error.status }}</font>
-                                                </td>
-
-                                                <td class="mid-left" style="width: 30%">
-                                                    {{ error.num }}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-
-
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="mid-td">
-                                    {{ report.total }}
-                                </td>
+                                <th class="mid-td" style="width: 20%">IP</th>
+                                <th class="mid-td" style="width: 70%">Detail</th>
+                                <th class="mid-td" style="width: 10%">Total</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody>
+                            {% for report in server.report %}
+                                <tr>
+                                    <td class="mid-td">
+                                        <font color="{{ 'red' if report.total_error_overload else '' }}">{{ report.ip }}</font>
+                                    </td>
+                                    <td class="mid-td">
+                                        <table class="table table-bordered table-condense">
+                                            <tbody>
+
+                                            {% for error in report.detail %}
+                                                <tr>
+                                                    <td style="width: 70%">
+                                                        <font color="{{ 'red' if error.error_overload else '' }}">{{ error.status }}</font>
+                                                    </td>
+
+                                                    <td class="mid-left" style="width: 30%">
+                                                        {{ error.num }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td class="mid-td">
+                                        {{ report.total }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 </div>
             {% endfor %}
         {% endif %}
