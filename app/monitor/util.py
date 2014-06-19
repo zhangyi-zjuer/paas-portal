@@ -4,11 +4,13 @@
 import xml.etree.ElementTree as ET
 import urllib2
 import time
+import logging
+import traceback
 
 from config import CAT_HOST
 
 
-def parse_report(xml_str, domain):
+def parse_report(xml_str):
     root = ET.fromstring(xml_str)
     machines = root.findall('report/machine')
     error_reports = []
@@ -28,8 +30,13 @@ def parse_report(xml_str, domain):
 
 def get_cat_error_report(domain, time):
     url = 'http://%s/cat/r/p?domain=%s&date=%s&forceDownload=xml' % (CAT_HOST, domain, time)
-    request = urllib2.urlopen(url)
-    return parse_report(request.read(), domain)
+    try:
+        request = urllib2.urlopen(url)
+        return parse_report(request.read())
+    except:
+        logging.error('Cat request Exception: %s\n %s' % (domain, traceback.format_exc()))
+
+    return None
 
 
 def today():

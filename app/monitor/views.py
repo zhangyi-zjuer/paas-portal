@@ -19,11 +19,10 @@ def index():
     from forms import MonitorForm
 
     form = MonitorForm()
-    form.type.choices = [('all', 'All Server')] + [(ele.cat_name, ele.cat_name) for ele in
-                                                   CatServerNameMap.query.all()]
+    form.type.choices = [('all', 'All Server')] + sorted([(ele.cat_name, ele.cat_name) for ele in
+                                                          CatServerNameMap.query.all()], key=lambda d: d[0])
     servers = []
     percent = 0.1
-    only_overload = False
     if request.method == 'POST':
         type = form.type.data
         date = form.date.data
@@ -45,13 +44,17 @@ def index():
 
         if type != 'all':
             error_report = get_cat_error_report(type, time)
-            servers.append({"name": type, "report": error_report})
+            if error_report:
+                servers.append(
+                    {"name": type, "report": error_report, "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
+                        CAT_HOST, type, time)})
         else:
             for server_name in CatServerNameMap.query.all():
                 error_report = get_cat_error_report(server_name.cat_name, time)
-                servers.append({"name": server_name.cat_name, "report": error_report,
-                                "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
-                                    CAT_HOST, server_name.cat_name, time)})
+                if error_report:
+                    servers.append({"name": server_name.cat_name, "report": error_report,
+                                    "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
+                                        CAT_HOST, server_name.cat_name, time)})
 
     form.only_overload.data = False
     return render_template('index.html', servers=format_report(servers, percent), form=form)
