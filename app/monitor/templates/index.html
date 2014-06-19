@@ -78,10 +78,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#date").attr("data-date-format", "dd-mm-yyyy");
+            $("#date").attr("data-date-format", "YYYY-MM-DD");
             $("#date").attr("autocomplete", "off");
         });
-        $('#date').datepicker();
+
+        $(function () {
+            $('#date').datetimepicker({
+                pickTime: true
+            });
+        });
 
 
         $("#only_overload").click(function () {
