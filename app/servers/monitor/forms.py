@@ -5,7 +5,7 @@ from flask_wtf import Form
 from wtforms import TextField, SubmitField, SelectField, BooleanField
 from wtforms.validators import Required
 
-from util import *
+from app.servers.monitor.util import *
 
 
 class MonitorForm(Form):

@@ -4,9 +4,8 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask.ext.login import login_required
 
-from util import get_cat_error_report
-from models import CatServerNameMap, session
-
+from app.servers.monitor.util import get_cat_error_report
+from app.models.local import CatServerNameMap, session
 from config import PAAS_HOST_PREFIX, CAT_HOST
 
 
@@ -16,7 +15,7 @@ mod = Blueprint('monitor', __name__, template_folder='templates', static_folder=
 @mod.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    from forms import MonitorForm
+    from app.servers.monitor.forms import MonitorForm
 
     form = MonitorForm()
     form.type.choices = [('all', 'All Server')] + sorted([(ele.cat_name, ele.cat_name) for ele in
@@ -65,7 +64,7 @@ def index():
 @mod.route('/cat', methods=['GET', 'POST'])
 @login_required
 def cat_name():
-    from forms import CatMapForm
+    from app.servers.monitor.forms import CatMapForm
 
     form = CatMapForm()
     if request.method == 'GET':
@@ -98,10 +97,10 @@ def del_cat(id):
 
 
 def get_not_selected():
-    from app.models import AppVersion
+    from app.models.database import AppVersion
 
-    servers = [ele.app_id for ele in AppVersion.query.all()]
-    cats = [ele.real_name for ele in CatServerNameMap.query.all()]
+    servers = [ele.app_id.strip() for ele in AppVersion.query.all()]
+    cats = [ele.real_name.strip() for ele in CatServerNameMap.query.all()]
 
     left = set()
     for server in servers:

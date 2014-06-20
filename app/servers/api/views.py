@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-6-12.
 import time
+
 from flask_login import login_required
 from flask import Blueprint, request, redirect, url_for
 
 from config import PAAS_HOST
-from app.paasUtil import auth_request
+from app.utils.paasUtil import auth_request
+
 
 mod = Blueprint('api', __name__, template_folder='templates', static_folder='static')
 

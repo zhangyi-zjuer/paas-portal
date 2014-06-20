@@ -5,10 +5,10 @@ import re
 from flask import Blueprint, redirect, url_for, render_template, request
 from flask.ext.login import login_required
 
-from app.models import *
-from app.admin.forms import *
-from app.database import DbUtil
-from app.paasUtil import format_num, get_agent_info
+import app.utils.dbUtil as DbUtil
+from app.models.database import *
+from app.servers.admin.forms import *
+from app.utils.paasUtil import format_num, get_agent_info
 from config import INSTANCE_STATUA_1
 
 

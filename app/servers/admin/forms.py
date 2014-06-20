@@ -4,7 +4,7 @@
 from flask_wtf import Form
 from wtforms import TextField, IntegerField, SubmitField, SelectField, HiddenField
 
-from app.models import Network
+from app.models.database import Network
 
 
 class MachineForm(Form):

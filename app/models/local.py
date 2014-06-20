@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-# Created by zhangyi on 14-6-4.
-from app.dbUtil import generate_db
+# Created by zhangyi on 14-6-20.
+
+from sqlalchemy import CHAR, Column, INTEGER
+
+from app.utils.dbUtil import generate_db
 from config import local_db_url
-from sqlalchemy import CHAR, Column
-
-user_engine, user_session, User_Base = generate_db(local_db_url)
 
 
-class User(User_Base):
+engine, session, Base = generate_db(local_db_url)
+
+
+class User(Base):
     __tablename__ = 'user'
     __table_args__ = {}
 
@@ -30,10 +33,10 @@ class User(User_Base):
         return '<User %r>' % self.username
 
 
-def init_table(table):
-    table.__table__.drop(user_engine, checkfirst=True)
-    table.metadata.create_all(bind=user_engine)
+class CatServerNameMap(Base):
+    __tablename__ = 'cat_server_name_map'
+    __table_args__ = {'sqlite_autoincrement': True}
 
-
-def init_db():
-    init_table(User)
+    id = Column(u'id', INTEGER, primary_key=True, autoincrement=True)
+    cat_name = Column(u'cat_name', CHAR(length=128), nullable=False)
+    real_name = Column(u'real_name', CHAR(length=128), nullable=False)

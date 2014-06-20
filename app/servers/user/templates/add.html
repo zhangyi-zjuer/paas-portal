@@ -1,0 +1,41 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="hero-unit">
+
+            <form class="form-horizontal offset1" method="post" name="add">
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-prepend">
+
+                            {{ form.Email(placeholder="请输入邮箱") }}
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-prepend">
+
+                            {{ form.Name(placeholder="请输入名称") }}
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success">确定</button>
+                        <a class="btn  offset1 btn-primary" href='/user/admin'>返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

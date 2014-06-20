@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-3-14.
 
-from app.user.models import *
-from app.monitor.models import init_db as init_monitor_db
 import hashlib
+
+from app.models.local import session as local_session, User, CatServerNameMap
+import app.utils.dbUtil as DbUtil
 
 
 def add_user(username, password):
@@ -15,18 +16,17 @@ def add_user(username, password):
     user.username = username
     user.password = hashlib.md5(password.encode('utf-8')).hexdigest()
 
-    user_session.add(user)
-    user_session.commit()
+    local_session.add(user)
+    local_session.commit()
 
     print 'add user: ' + username
 
 
 def del_user(username):
     users = User.query.filter(User.username == username).all()
-    for user in users:
-        user_session.delete(user)
-        print 'delete user: ' + username
-    user_session.commit()
+    DbUtil.delete(users)
+
+    print 'delete user: ' + username
 
 
 def setup():
@@ -35,8 +35,8 @@ def setup():
         r = raw_input("Please Enter correct character (y or n): ").lower()
 
     if 'y' in r:
-        init_db()
-        init_monitor_db()
+        DbUtil.init_table(User)
+        DbUtil.init_table(CatServerNameMap)
         print 'Set up Successfully'
     else:
         print 'Nothing Changed'
@@ -52,8 +52,3 @@ if __name__ == "__main__":
         add_user(sys.argv[2], sys.argv[3])
     elif len(sys.argv) == 3 and sys.argv[1] == 'del':
         del_user(sys.argv[2])
-
-
-
-
-

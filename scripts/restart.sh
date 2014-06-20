@@ -1,5 +1,9 @@
 #! /bin/bash
 export LANG=zh_CN.UTF-8
+
+cd `dirname $0`
+cd ..
+
 mkdir -p log
 
 source ~/.bashrc

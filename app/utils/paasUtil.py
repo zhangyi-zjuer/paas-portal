@@ -5,7 +5,7 @@ import urllib2
 import base64
 
 from config import GROUP_MODE, INSTANCE_STATUA, BasicAuth
-from models import *
+from app.models.database import *
 
 
 def get_instances_by_app(app_id, app_version=None):

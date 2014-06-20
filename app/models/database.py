@@ -2,7 +2,11 @@
 # Created by zhangyi on 14-3-14.
 from sqlalchemy import Column, INTEGER, CHAR, TEXT, BIGINT, SMALLINT, VARCHAR, TIMESTAMP
 
-from database import Base
+from config import db_url
+from app.utils.dbUtil import generate_db
+
+
+engine, session, Base = generate_db(db_url)
 
 
 class Machine(Base):

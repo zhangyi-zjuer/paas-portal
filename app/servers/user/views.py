@@ -1,10 +1,10 @@
 # coding:utf-8
 import hashlib
 
-from flask import Blueprint, redirect, url_for, g, session, flash, request
-from flask.ext.login import login_user, logout_user, login_required, current_user
+from flask import Blueprint, redirect, url_for, g, flash, request,session
+from flask.ext.login import login_user, logout_user, login_required
 
-from models import *
+from app.models.local import User
 from app import login_manager
 
 
