@@ -69,12 +69,12 @@ def cat_name():
     form = CatMapForm()
     if request.method == 'GET':
         form.real_name.choices = get_not_selected()
-        return render_template('cat.html', form=form, servers=CatServerNameMap.query.all())
+        return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('cat_name').all())
 
     if len(form.cat_name.data.strip()) == 0:
         flash("'Cat Name' can't be blank!")
         form.real_name.choices = get_not_selected()
-        return render_template('cat.html', form=form, servers=CatServerNameMap.query.all())
+        return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('cat_name').all())
 
     cat_map = CatServerNameMap()
     cat_map.cat_name = form.cat_name.data
@@ -83,7 +83,7 @@ def cat_name():
     session.commit()
 
     form.real_name.choices = get_not_selected()
-    return render_template('cat.html', form=form, servers=CatServerNameMap.query.all())
+    return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('cat_name').all())
 
 
 @mod.route('/cat/del/<id>')

@@ -117,7 +117,7 @@ def instances():
             query = Instance.query
 
     if query:
-        instances = query.all()
+        instances = query.order_by('instance_group_id').all()
     else:
         instances = []
 
