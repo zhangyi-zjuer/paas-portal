@@ -47,3 +47,5 @@ if __name__ == '__main__':
     error_reports = get_cat_error_report('FeedMQ', '2014061717')
     for report in error_reports:
         print report['ip'], report['total'], report['detail']
+
+    print today()

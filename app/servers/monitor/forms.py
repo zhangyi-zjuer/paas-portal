@@ -9,7 +9,7 @@ from app.servers.monitor.util import *
 
 
 class MonitorForm(Form):
-    date = TextField('type', description='Enter Date', default=today())
+    date = TextField('type', description='Enter Date')
     type = SelectField('type')
     hour = SelectField('type', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)), default=-1)
     percent = TextField('percent', description='Percent (default 0.1)')

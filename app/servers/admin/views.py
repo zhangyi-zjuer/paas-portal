@@ -181,6 +181,3 @@ def get_form_from_db(obj, form):
         if attr not in ['__class__', 'csrf_token'] and hasattr(form, attr) and hasattr(getattr(form, attr), 'data'):
             setattr(getattr(form, attr), 'data', getattr(obj, attr))
     return form
-
-
-

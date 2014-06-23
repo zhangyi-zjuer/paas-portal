@@ -14,3 +14,7 @@ body {
 .btn-custom {
     width: 90px !important;
 }
+
+.table-inside {
+    margin: 0px;
+}

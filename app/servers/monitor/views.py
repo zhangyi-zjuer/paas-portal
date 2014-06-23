@@ -6,6 +6,7 @@ from flask.ext.login import login_required
 
 from app.servers.monitor.util import get_cat_error_report
 from app.models.local import CatServerNameMap, session
+from util import today
 from config import PAAS_HOST_PREFIX, CAT_HOST
 
 
@@ -22,7 +23,10 @@ def index():
                                                           CatServerNameMap.query.all()], key=lambda d: d[0])
     servers = []
     percent = 0.1
-    if request.method == 'POST':
+
+    if request.method == 'GET':
+        form.date.data = today()
+    else:
         type = form.type.data
         date = form.date.data
         hour = form.hour.data
