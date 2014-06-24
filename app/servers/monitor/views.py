@@ -170,9 +170,3 @@ def format_report(servers, percent):
             server['overload'] = 'normal'
 
     return servers
-
-
-
-
-
-
