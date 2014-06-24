@@ -20,7 +20,7 @@ def index():
 
     form = MonitorForm()
     form.type.choices = [('all', 'All Server')] + sorted([(ele.cat_name, ele.cat_name) for ele in
-                                                          CatServerNameMap.query.all()], key=lambda d: d[0])
+                                                          CatServerNameMap.query.all()], key=lambda d: d[0].lower())
     servers = []
     percent = 0.1
 
@@ -111,7 +111,7 @@ def get_not_selected():
         if not server in cats:
             left.add((server, server))
 
-    return sorted(left, key=lambda d: d[0])
+    return sorted(left, key=lambda d: d[0].lower())
 
 
 def format_report(servers, percent):
