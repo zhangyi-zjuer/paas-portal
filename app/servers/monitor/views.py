@@ -14,7 +14,6 @@ mod = Blueprint('monitor', __name__, template_folder='templates', static_folder=
 
 
 @mod.route('/index', methods=['GET', 'POST'])
-@login_required
 def index():
     from app.servers.monitor.forms import MonitorForm
 

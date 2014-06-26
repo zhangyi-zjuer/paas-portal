@@ -57,6 +57,5 @@ INSTANCE_STATUA_1 = {
     504: "SHUTDOWN_FAIL",
     505: "START_FAIL",
     506: "REMOVE_FAIL",
-
 }
 
