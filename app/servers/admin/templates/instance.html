@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="container">
-        <br/>
+
 
         <div class="row">
             <div class="col-md-5">
@@ -12,9 +12,20 @@
                     Instances</a>
             </div>
         </div>
-        {% if instances %}
-            <font color="red"><h3>total: {{ instance_num }}</h3></font>
 
+        {% if instances %}
+            <br/>
+            <div class="row">
+                <div class="col-md-2">
+                    <font color="red">TOTAL: {{ total }}</font>
+                </div>
+
+                {% for status in statuses %}
+                    <div class="col-md-2">
+                        <font color="{{ 'green' if status[0] == 'RUNNING' else 'red' }}">{{ status[0] }}: {{ status[1] }}</font>
+                    </div>
+                {% endfor %}
+            </div>
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>

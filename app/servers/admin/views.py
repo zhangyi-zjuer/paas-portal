@@ -86,7 +86,6 @@ def show_agent(machine_id):
 @mod.route('/instances', methods=['GET', 'POST'])
 def instances():
     form = InstanceSearchForm()
-
     type = request.args.get('type')
     value = request.args.get('value')
 
@@ -121,14 +120,23 @@ def instances():
     else:
         instances = []
 
+    total = 0
+    statuses = {}
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
+        total += 1
+
+        if not instance.status_desc in statuses:
+            statuses[instance.status_desc] = 0
+
+        statuses[instance.status_desc] += 1
+
         if instance.agent_ip:
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
 
     app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
-                           instance_num=len(instances))
+                           total=total, statuses=statuses.iteritems())
 
 
 @mod.route('/networks')
