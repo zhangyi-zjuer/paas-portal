@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-6-18.
-
+import datetime
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask.ext.login import login_required
 
@@ -61,6 +61,7 @@ def index():
                                     CAT_HOST, server_name.cat_name, time)})
 
     form.only_overload.data = True
+    form.type.default = datetime.datetime.now().hour
     return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 
