@@ -60,7 +60,7 @@ def index():
                                 "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
                                     CAT_HOST, server_name.cat_name, time)})
 
-    form.only_overload.data = False
+    form.only_overload.data = True
     return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 
