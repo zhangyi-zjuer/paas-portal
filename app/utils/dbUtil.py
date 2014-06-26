@@ -19,7 +19,12 @@ def generate_db(url):
 def db_operate(obj, op_type):
     if not obj:
         return
-    session = obj.query.session
+
+    if isinstance(obj, collections.Iterable):
+        session = obj[0].query.session
+    else:
+        session = obj.query.session
+
     if isinstance(obj, collections.Iterable):
         for ele in obj:
             getattr(session, op_type)(ele)
