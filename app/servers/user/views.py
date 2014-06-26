@@ -31,7 +31,7 @@ def login():
             return redirect(redirect_url())
 
         if hashlib.md5(password.encode('utf-8')).hexdigest() == user.password:
-            remember_me = True
+            remember_me = False
             if 'remember_me' in session:
                 remember_me = session['remember_me']
                 session.pop('remember_me', None)
