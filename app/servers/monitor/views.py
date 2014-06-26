@@ -61,7 +61,7 @@ def index():
                                     CAT_HOST, server_name.cat_name, time)})
 
     form.only_overload.data = True
-    form.type.default = datetime.datetime.now().hour
+    form.hour.data = datetime.datetime.now().hour
     return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 

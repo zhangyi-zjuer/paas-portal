@@ -11,7 +11,7 @@ from app.servers.monitor.util import *
 class MonitorForm(Form):
     date = TextField('type', description='Enter Date')
     type = SelectField('type')
-    hour = SelectField('hour', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)), default=-1)
+    hour = SelectField('hour', coerce=int, choices=[(-1, 'All Hour')] + zip(range(0, 24), range(0, 24)))
     percent = TextField('percent', description='Percent (default 0.1)')
     only_overload = BooleanField('overload', description="Only Overload", default=False)
     submit_button = SubmitField('Search')
