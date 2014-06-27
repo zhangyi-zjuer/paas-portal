@@ -2,7 +2,6 @@
 # Created by zhangyi on 14-6-20.
 
 from sqlalchemy import CHAR, Column, INTEGER
-
 from app.utils.dbUtil import generate_db
 from config import local_db_url
 

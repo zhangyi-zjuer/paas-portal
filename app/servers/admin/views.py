@@ -136,10 +136,10 @@ def instances():
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
         total += 1
 
-        if not instance.status_desc in statuses:
-            statuses[instance.status_desc] = 0
+        if not (instance.status, instance.status_desc) in statuses:
+            statuses[(instance.status, instance.status_desc)] = 0
 
-        statuses[instance.status_desc] += 1
+        statuses[(instance.status, instance.status_desc)] += 1
 
         if instance.agent_ip:
             instance.machine_id = Machine.query.filter(Machine.ip == instance.agent_ip)[0].id
@@ -151,6 +151,7 @@ def instances():
     if not form.status.data in map(lambda d: d[0], status_choice):
         form.status.data = -1
 
+    print statuses
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
                            total=total, statuses=statuses.iteritems())
 

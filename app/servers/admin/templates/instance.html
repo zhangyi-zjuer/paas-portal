@@ -3,6 +3,7 @@
     <div class="container">
 
         <br/>
+
         <div class="row">
             <div class="col-md-8">
                 {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
@@ -17,12 +18,13 @@
             <br/>
             <div class="row">
                 <div class="col-md-2">
-                    <font color="red">TOTAL: {{ total }}</font>
+                    <a id="status-link" status="-1"><font color="red">TOTAL: {{ total }}</font></a>
                 </div>
 
                 {% for status in statuses %}
                     <div class="col-md-2">
-                        <font color="{{ 'green' if status[0] == 'RUNNING' else 'red' }}">{{ status[0] }}: {{ status[1] }}</font>
+                        <a id="status-link" status="{{ status[0][0] }}"><font
+                                color="{{ 'green' if status[0][1] == 'RUNNING' else 'red' }}">{{ status[0][1] }}: {{ status[1] }}</font></a>
                     </div>
                 {% endfor %}
             </div>
@@ -30,11 +32,11 @@
                 <thead>
                 <tr>
                     <th class="mid-td" style="width: 30%">Instance ID</th>
-                    <th class="mid-td" style="width: 10%">Group ID</th>
-                    <th class="mid-td" style="width: 10%">App ID</th>
-                    <th class="mid-td" style="width: 10%">App Version</th>
+                    <th class="mid-td" style="width: 5%">Group ID</th>
+                    <th class="mid-td" style="width: 5%">App ID</th>
+                    <th class="mid-td" style="width: 5%">App Version</th>
                     <th class="mid-td" style="width: 10%">Instance IP</th>
-                    <th class="mid-td" style="width: 10%">Instance Port</th>
+                    <th class="mid-td" style="width: 5%">Instance Port</th>
                     <th class="mid-td" style="width: 10%">Agent IP</th>
                     <th class="mid-td" style="width: 15%">Status</th>
                     {% if g.user.is_authenticated() %}
@@ -173,6 +175,12 @@
             var status = $(this).val();
             dealwithStatus(status);
 
+        });
+
+        $('[id=status-link]').click(function () {
+            var status = $(this).attr('status');
+            dealwithStatus(status);
+            $('#status').val(status);
         });
 
     </script>
