@@ -89,8 +89,6 @@ def instances():
     type = request.args.get('type')
     value = request.args.get('value')
 
-    status = -1
-
     if request.method == 'GET':
         if request.args.get("all"):
             query = Instance.query
@@ -105,7 +103,6 @@ def instances():
         else:
             type = form.type.data
             value = form.value.data
-            status = form.status.data
 
         if value:
             if type == 0:
@@ -119,9 +116,6 @@ def instances():
             query = Instance.query
 
     if query:
-        if status != -1:
-            query = query.filter(Instance.status == status)
-
         instances = query.order_by('instance_group_id').all()
     else:
         instances = []
@@ -153,7 +147,6 @@ def instances():
     app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
 
     form.status.choices = status_choice
-    form.status.default = status
 
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
                            total=total, statuses=statuses.iteritems())

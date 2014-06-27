@@ -25,6 +25,7 @@ def index():
 
     if request.method == 'GET':
         form.date.data = today()
+        form.hour.data = datetime.datetime.now().hour
     else:
         type = form.type.data
         date = form.date.data
@@ -61,7 +62,6 @@ def index():
                                     CAT_HOST, server_name.cat_name, time)})
 
     form.only_overload.data = True
-    form.hour.data = datetime.datetime.now().hour
     return render_template('index.html', servers=format_report(servers, percent), form=form)
 
 

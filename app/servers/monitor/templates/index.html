@@ -81,7 +81,10 @@
         $(document).ready(function () {
             $("#date").attr("data-date-format", "YYYY-MM-DD");
             $("#date").attr("autocomplete", "off");
-            $("div[name=normal]").hide();
+            
+            if ($("#only_overload").is(":checked")) {
+                $("div[name=normal]").hide();
+            }
         });
 
         $(function () {

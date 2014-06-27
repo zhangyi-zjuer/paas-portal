@@ -45,7 +45,7 @@
 
                 <tbody>
                 {% for instance in instances %}
-                    <tr>
+                    <tr status="{{ instance.status }}" name="instance-entity">
                         <td class="mid-td">
                             {{ instance.instance_id }}
                         </td>
@@ -86,7 +86,7 @@
                             {% if instance.status in [200,501,502,503,504] %}
                                 <td class="mid-td">
                                     <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
+                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, status=instance.status,instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
                                        onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
                                 </td>
                             {% endif %}
@@ -94,7 +94,7 @@
                             {% if instance.status in [500,505] %}
                                 <td class="mid-td">
                                     <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id, instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
+                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
                                        onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>Start</a>
                                 </td>
                             {% endif %}
@@ -127,9 +127,35 @@
             $("#value").attr("placeholder", "Enter Machine IP")
         }
 
+        function hideAllInstances() {
+            $("[name=instance-entity]").hide();
+        }
+
+        function showAllInstance() {
+            $("[name=instance-entity]").show();
+        }
+
+        function showInstances(status) {
+            $("[status=" + status + "]").show();
+        }
+
+        function hideInstances(status) {
+            $("[status=" + status + "]").hide();
+        }
+
+        function dealwithStatus(status) {
+            if (status == "-1") {
+                showAllInstance();
+            } else {
+                hideAllInstances();
+                showInstances(status);
+            }
+        }
+
         $(document).ready(function () {
             $("#value").attr("autocomplete", "off");
             setDataSource();
+            dealwithStatus($('#status').val());
         });
 
         $('#type').change(function () {
@@ -140,6 +166,13 @@
             } else {
                 setDataSource();
             }
+        });
+
+
+        $('#status').click(function () {
+            var status = $(this).val();
+            dealwithStatus(status);
+
         });
 
     </script>
