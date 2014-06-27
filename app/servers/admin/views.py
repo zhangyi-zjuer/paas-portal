@@ -148,6 +148,9 @@ def instances():
 
     form.status.choices = status_choice
 
+    if not form.status.data in map(lambda d: d[0], status_choice):
+        form.status.data = -1
+
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
                            total=total, statuses=statuses.iteritems())
 
