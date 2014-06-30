@@ -146,7 +146,7 @@ def instances():
 
     app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
 
-    form.status.choices = status_choice
+    form.status.choices = [(-1, 'ALL')] + [status[0] for status in statuses.iteritems()] if statuses else status_choice
 
     if not form.status.data in map(lambda d: d[0], status_choice):
         form.status.data = -1
