@@ -2,7 +2,7 @@
 
 import sys
 
-from flask import Flask, g
+from flask import Flask, g, session
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, current_user
 
@@ -31,6 +31,7 @@ login_manager.login_view = 'user.login'
 
 @app.before_request
 def before_request():
+    session.modified = True
     g.user = current_user
     if not current_user.is_authenticated():
         from app.servers.user.forms import LoginForm
