@@ -28,14 +28,14 @@
                     </div>
                 {% endfor %}
             </div>
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-bordered" style="TABLE-LAYOUT: fixed">
                 <thead>
                 <tr>
-                    <th class="mid-td" style="width: 30%">Instance ID</th>
+                    <th class="mid-td" style="width: 28%">Instance ID</th>
                     <th class="mid-td" style="width: 5%">Group ID</th>
                     <th class="mid-td" style="width: 5%">App ID</th>
-                    <th class="mid-td" style="width: 5%">App Version</th>
-                    <th class="mid-td" style="width: 10%">Instance IP</th>
+                    <th class="mid-td" style="width: 10%">App Version</th>
+                    <th class="mid-td" style="width: 7%">Instance IP</th>
                     <th class="mid-td" style="width: 5%">Instance Port</th>
                     <th class="mid-td" style="width: 10%">Agent IP</th>
                     <th class="mid-td" style="width: 15%">Status</th>
@@ -60,7 +60,7 @@
                             {{ instance.app_id }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td" style="WORD-WRAP: break-word">
                             {{ instance.app_version }}
                         </td>
 
