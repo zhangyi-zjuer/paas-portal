@@ -48,31 +48,31 @@
                 <tbody>
                 {% for instance in instances %}
                     <tr status="{{ instance.status }}" name="instance-entity">
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {{ instance.instance_id }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {{ instance.instance_group_id }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {{ instance.app_id }}
                         </td>
 
-                        <td class="mid-td" style="WORD-WRAP: break-word">
+                        <td class="mid-td word-wrap">
                             {{ instance.app_version }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {{ instance.instance_ip }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {{ instance.instance_port }}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             {% if instance.agent_ip %}
                                 <a href="{{ url_for('admin.show_agent', machine_id = instance.machine_id) }}">{{ instance.agent_ip }}</a>
                             {% else %}

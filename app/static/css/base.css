@@ -18,3 +18,7 @@ body {
 .table-inside {
     margin: 0px;
 }
+
+.word-wrap {
+    WORD-WRAP: break-word;
+}
