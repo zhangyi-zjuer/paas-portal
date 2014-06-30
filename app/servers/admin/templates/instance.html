@@ -31,12 +31,12 @@
             <table class="table table-striped table-bordered" style="TABLE-LAYOUT: fixed">
                 <thead>
                 <tr>
-                    <th class="mid-td" style="width: 28%">Instance ID</th>
+                    <th class="mid-td" style="width: 25%">Instance ID</th>
                     <th class="mid-td" style="width: 5%">Group ID</th>
                     <th class="mid-td" style="width: 10%">App ID</th>
                     <th class="mid-td" style="width: 10%">App Version</th>
                     <th class="mid-td" style="width: 12%">Instance IP</th>
-                    <th class="mid-td" style="width: 5%">Instance Port</th>
+                    <th class="mid-td" style="width: 8%">Instance Port</th>
                     <th class="mid-td" style="width: 10%">Agent IP</th>
                     <th class="mid-td" style="width: 10%">Status</th>
                     {% if g.user.is_authenticated() %}
@@ -80,7 +80,7 @@
                             {% endif %}
                         </td>
 
-                        <td class="mid-td">
+                        <td class="mid-td word-wrap">
                             <font color="{{ '' if instance.status == 200 else 'red' }}">{{ instance.status_desc }}</font>
                         </td>
                         {% if g.user.is_authenticated() %}
