@@ -19,7 +19,6 @@ class MachineForm(Form):
     idc = TextField('idc')
     switcher = TextField('swithcer')
     frame = TextField('frame')
-
     submit_button = SubmitField('OK')
 
 

@@ -9,8 +9,9 @@ from app.models.local import CatServerNameMap, session
 from util import today
 from config import PAAS_HOST_PREFIX, CAT_HOST
 
-
 mod = Blueprint('monitor', __name__, template_folder='templates', static_folder='static')
+
+CAT_LINK_PATTERN = 'http://%s/cat/r/p?op=view&domain=%s&date=%s'
 
 
 @mod.route('/index', methods=['GET', 'POST'])
@@ -20,16 +21,12 @@ def index():
     form = MonitorForm()
     form.type.choices = [('all', 'All Server')] + sorted([(ele.cat_name, ele.cat_name) for ele in
                                                           CatServerNameMap.query.all()], key=lambda d: d[0].lower())
-    servers = []
-    percent = 0.1
+    servers, percent = [], 0.1
 
     if request.method == 'GET':
-        form.date.data = today()
-        form.hour.data = datetime.datetime.now().hour
+        form.date.data, form.hour.data = today(), datetime.datetime.now().hour
     else:
-        type = form.type.data
-        date = form.date.data
-        hour = form.hour.data
+        type, date, hour = form.type.data, form.date.data, form.hour.data
         percent = form.percent.data or 0.1
 
         try:
@@ -46,20 +43,15 @@ def index():
         time = date.replace('-', '') + str(hour)
 
         if type != 'all':
-            error_report = get_cat_error_report(type, time)
-            if not error_report:
-                error_report = []
+            error_report = get_cat_error_report(type, time) or []
             servers.append(
-                {"name": type, "report": error_report, "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
-                    CAT_HOST, type, time)})
+                {"name": type, "report": error_report,
+                 "cat_link": CAT_LINK_PATTERN % (CAT_HOST, type, time)})
         else:
             for server_name in CatServerNameMap.query.all():
-                error_report = get_cat_error_report(server_name.cat_name, time)
-                if not error_report:
-                    error_report = []
+                error_report = get_cat_error_report(server_name.cat_name, time) or []
                 servers.append({"name": server_name.cat_name, "report": error_report,
-                                "cat_link": 'http://%s/cat/r/p?op=view&domain=%s&date=%s' % (
-                                    CAT_HOST, server_name.cat_name, time)})
+                                "cat_link": CAT_LINK_PATTERN % (CAT_HOST, server_name.cat_name, time)})
 
     form.only_overload.data = True
     return render_template('index.html', servers=format_report(servers, percent), form=form)
@@ -73,20 +65,15 @@ def cat_name():
     form = CatMapForm()
     if request.method == 'GET':
         form.real_name.choices = get_not_selected()
-        return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('upper(cat_name)').all())
-
-    if len(form.cat_name.data.strip()) == 0:
+    elif len(form.cat_name.data.strip()) == 0:
         flash("'Cat Name' can't be blank!")
         form.real_name.choices = get_not_selected()
-        return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('upper(cat_name)').all())
-
-    cat_map = CatServerNameMap()
-    cat_map.cat_name = form.cat_name.data
-    cat_map.real_name = form.real_name.data
-    session.add(cat_map)
-    session.commit()
-
-    form.real_name.choices = get_not_selected()
+    else:
+        cat_map = CatServerNameMap()
+        cat_map.cat_name, cat_map.real_name = form.cat_name.data, form.real_name.data
+        session.add(cat_map)
+        session.commit()
+        form.real_name.choices = get_not_selected()
     return render_template('cat.html', form=form, servers=CatServerNameMap.query.order_by('upper(cat_name)').all())
 
 
@@ -105,31 +92,17 @@ def get_not_selected():
 
     servers = [ele.app_id.strip() for ele in AppVersion.query.all()]
     cats = [ele.real_name.strip() for ele in CatServerNameMap.query.all()]
-
-    left = set()
-    for server in servers:
-        if not server in cats:
-            left.add((server, server))
-
-    return sorted(left, key=lambda d: d[0].lower())
+    return sorted(set([(server, server) for server in servers if server not in cats]), key=lambda d: d[0].lower())
 
 
 def format_report(servers, percent):
     for server in servers:
         report = server['report']
-        paas_total_error = 0
-        kvm_total_error = 0
-
-        kvm_machine_num = 0
-        paas_machine_num = 0
-
-        paas_errors = set()
-        kvm_errors = set()
+        paas_total_error, kvm_total_error, kvm_machine_num, paas_machine_num = 0, 0, 0, 0
+        paas_errors, kvm_errors = set(), set()
 
         for machine in report:
-            ip = machine['ip']
-            total_error = machine['total']
-            detail = machine['detail']
+            ip, total_error, detail = machine['ip'], machine['total'], machine['detail']
 
             errors = set()
             for error in detail:
@@ -158,12 +131,10 @@ def format_report(servers, percent):
         for machine in report:
             if machine['ip'].startswith(PAAS_HOST_PREFIX):
                 if is_total_overload:
-                    machine['total_error_overload'] = True
-                    server['overload'] = 'overload'
+                    machine['total_error_overload'], server['overload'] = True, 'overload'
                 for error in machine['detail']:
                     if error['status'] in error_overload:
-                        error['error_overload'] = True
-                        server['overload'] = 'overload'
+                        error['error_overload'], server['overload'] = True, 'overload'
 
     for server in servers:
         if 'overload' not in server:
