@@ -20,14 +20,10 @@ def db_operate(obj, op_type):
     if not obj:
         return
 
-    if isinstance(obj, collections.Iterable):
-        session = obj[0].query.session
-    else:
-        session = obj.query.session
+    session = obj[0].query.session if isinstance(obj, collections.Iterable) else obj.query.session
 
     if isinstance(obj, collections.Iterable):
-        for ele in obj:
-            getattr(session, op_type)(ele)
+        [getattr(session, op_type)(ele) for ele in obj]
     else:
         getattr(session, op_type)(obj)
     session.commit()
@@ -50,8 +46,7 @@ def init_table(table):
 def count(q):
     engine = q.session.bind
     q = str(compile_query(q))
-    sql = "select count(*) " + q[q.lower().index("from"):]
-    sql = sql.replace("%", "%%")
+    sql = "select count(*) " + q[q.lower().index("from"):].replace("%", "%%")
 
     return engine.execute(sql).fetchone()[0]
 

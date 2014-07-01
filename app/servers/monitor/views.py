@@ -98,8 +98,8 @@ def get_not_selected():
 def format_report(servers, percent):
     for server in servers:
         report = server['report']
-        paas_total_error, kvm_total_error, kvm_machine_num, paas_machine_num = 0, 0, 0, 0
-        paas_errors, kvm_errors = set(), set()
+        paas_total_error, kvm_total_error, kvm_machine_num, paas_machine_num = [0] * 4
+        paas_errors, kvm_errors = [set()] * 2
 
         for machine in report:
             ip, total_error, detail = machine['ip'], machine['total'], machine['detail']
