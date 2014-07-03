@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-6-20.
 
-from sqlalchemy import CHAR, Column, INTEGER
+from sqlalchemy import CHAR, Column, INTEGER, TIMESTAMP, TEXT
 from app.utils.dbUtil import generate_db
 from config import local_db_url
 
@@ -39,3 +39,13 @@ class CatServerNameMap(Base):
     id = Column(u'id', INTEGER, primary_key=True, autoincrement=True)
     cat_name = Column(u'cat_name', CHAR(length=128), nullable=False)
     real_name = Column(u'real_name', CHAR(length=128), nullable=False)
+
+
+class InstanceOperator(Base):
+    __tablename__ = 'instance_operator'
+    __table_args__ = {'sqlite_autoincrement': True}
+    id = Column(u'id', INTEGER, primary_key=True, autoincrement=True)
+    ip = Column(u'ip', CHAR(length=128), nullable=False)
+    user = Column(u'user', CHAR(length=128), nullable=False)
+    timestamp = Column(u'timestamp', TIMESTAMP, nullable=False)
+    request = Column(u'request', TEXT)
