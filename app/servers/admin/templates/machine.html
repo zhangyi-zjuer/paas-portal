@@ -17,7 +17,6 @@
                 <th class="mid-td" style="width: 10%">Instance</th>
                 <th class="mid-td" style="width: 15%">Zone</th>
                 <th class="mid-td" style="width: 5%">Network</th>
-                <th class="mid-td" style="width: 12%"></th>
             </tr>
             </thead>
             <tbody>
@@ -28,7 +27,7 @@
                     </td>
 
                     <td class="mid-td">
-                        {{ machine.ip }}
+                        <a href='{{ url_for('admin.show_agent', machine_id=machine.id) if machine.basic.instance_num else "" }}'> {{ machine.ip }}</a>
                     </td>
 
                     <td class="mid-td">
@@ -63,10 +62,7 @@
                         {{ machine.network_id }}
                     </td>
 
-                    <td class="mid-td">
-                        <a class="btn btn-primary btn-custom" type="button"
-                           href='{{ url_for('admin.show_agent', machine_id=machine.id) }}'>Agent</a>
-                    </td>
+
                 </tr>
             {% endfor %}
             </tbody>
