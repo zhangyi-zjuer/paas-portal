@@ -22,3 +22,11 @@ body {
 .word-wrap {
     WORD-WRAP: break-word;
 }
+
+.scrollup {
+    opacity: 0.3;
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    display: none;
+}
