@@ -86,27 +86,24 @@ def show_agent(machine_id):
 @mod.route('/instances', methods=['GET', 'POST'])
 def instances():
     form = InstanceSearchForm()
-    type, value = request.args.get('type'), request.args.get('value')
 
-    if request.method == 'GET':
-        query = Instance.query if request.args.get("all") else None
-    if request.method == 'POST' or value:
-        if request.method == 'GET':
-            type = int(type)
-            form.type.data, form.value.data = type, value
-        else:
-            type, value = form.type.data, form.value.data
+    if request.method == 'POST':
+        type, value, status = form.type.data, form.value.data, form.status.data
+        return redirect(url_for('admin.instances', type=type, value=value, status=status))
 
-        if value:
-            if type == 0:
-                query = Instance.query.filter(Instance.agent_ip == value)
-            else:
-                app_info = re.split(r'\s*:\s*', value)
-                query = Instance.query.filter(Instance.app_id.startswith(app_info[0]))
-                if len(app_info) == 2:
-                    query = query.filter(Instance.app_version == app_info[1])
+    type, value, status = request.args.get('type'), request.args.get('value'), request.args.get('status') or -1
+
+    query = Instance.query if request.args.get("all") or (type is not None and not value) else None
+
+    if value and type is not None:
+        type = int(type)
+        if type == 0:
+            query = Instance.query.filter(Instance.agent_ip == value)
         else:
-            query = Instance.query
+            app_info = re.split(r'\s*:\s*', value)
+            query = Instance.query.filter(Instance.app_id.startswith(app_info[0]))
+            if len(app_info) == 2:
+                query = query.filter(Instance.app_version == app_info[1])
 
     instances = query.order_by('instance_group_id').all() if query else []
 
@@ -134,7 +131,10 @@ def instances():
 
     app_ids = '["' + '","'.join(set([instance.app_id for instance in Instance.query.all()])) + '"]'
 
-    form.status.choices = [(-1, 'ALL')] + [status[0] for status in statuses.iteritems()] if statuses else status_choice
+    form.status.choices = [(-1, 'ALL')] + [ele[0] for ele in statuses.iteritems()] if statuses else status_choice
+    form.type.data = int(type) if type not in [None, ''] else 1
+    form.status.data = int(status) if status not in [None, ''] else -1
+    form.value.data = value
 
     if not form.status.data in map(lambda d: d[0], status_choice):
         form.status.data = -1
