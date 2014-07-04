@@ -61,18 +61,18 @@ def get_optparser():
     parser.add_option("-u", "--username", dest="username",
                       help="specify the USERNAME", metavar="USERNAME")
 
-    parser.add_option("-p", "--password", dest="password",
+    parser.add_option("", "--password", dest="password",
                       help="specify the USERNAME", metavar="USERNAME")
 
-    parser.add_option("", "--add_user", action='store_false',
+    parser.add_option("", "--add_user", action='store_true',
                       dest="add_user", default=False,
                       help="add a new user")
 
-    parser.add_option("", "--del_user", action='store_false',
+    parser.add_option("", "--del_user", action='store_true',
                       dest="del_user", default=False,
                       help="delete user")
 
-    parser.add_option("", "--chg_pwd", action='store_false',
+    parser.add_option("-c", "--chg_pwd", action='store_true',
                       dest="chg_pwd", default=False,
                       help="change password")
 
@@ -80,8 +80,12 @@ def get_optparser():
                       help="init table", metavar="TABLE_MODEL")
 
     parser.add_option("", "--init",
-                      action="store_false", dest="init", default=False,
+                      action="store_true", dest="init", default=False,
                       help="init the project")
+
+    parser.add_option("-q", "--quiet",
+                      action="store_true", dest="verbose", default=False,
+                      help="don't print status messages to stdout")
 
     return parser
 
@@ -102,6 +106,8 @@ if __name__ == "__main__":
     is_del_user = options.del_user
     is_change_password = options.chg_pwd
     table = options.table
+
+    print options
 
 if is_init:
     setup()
