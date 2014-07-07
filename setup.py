@@ -83,10 +83,6 @@ def get_optparser():
                       action="store_true", dest="init", default=False,
                       help="init the project")
 
-    parser.add_option("-q", "--quiet",
-                      action="store_true", dest="verbose", default=False,
-                      help="don't print status messages to stdout")
-
     return parser
 
 
