@@ -4,7 +4,7 @@
 import hashlib
 from optparse import OptionParser
 
-from app.models.local import session as local_session, User, CatServerNameMap, InstanceOperator
+from app.models.local import User, CatServerNameMap, InstanceOperator
 import app.utils.dbUtil as DbUtil
 
 
@@ -17,8 +17,7 @@ def add_user(username, password):
     user.username = username
     user.password = hashlib.md5(password.encode('utf-8')).hexdigest()
 
-    local_session.add(user)
-    local_session.commit()
+    DbUtil.add(user)
 
     print 'add user: ' + username
 
@@ -39,6 +38,8 @@ def change_password(username, password):
 
     for user in users:
         user.password = password
+
+    print "%s password changed" % username
     DbUtil.add(users)
 
 
