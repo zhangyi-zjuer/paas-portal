@@ -85,21 +85,32 @@
                         </td>
                         {% if g.user.is_authenticated() %}
 
-                            {% if instance.status in [200,501,502,503,504] %}
-                                <td class="mid-td">
-                                    <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, status=instance.status,instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
-                                       onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
-                                </td>
-                            {% endif %}
+                            <td class="mid-td">
 
-                            {% if instance.status in [500,505] %}
-                                <td class="mid-td">
-                                    <a class="btn btn-success btn-custom btn-sm" type="button"
-                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
-                                       onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>Start</a>
-                                </td>
-                            {% endif %}
+                                {% if instance.status in [200,501,502,503,504] %}
+                                    <div>
+                                        <a class="btn btn-success btn-custom btn-sm" type="button"
+                                           href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, status=instance.status,instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
+                                           onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
+                                    </div>
+                                {% endif %}
+
+                                {% if instance.status in [500,505] %}
+                                    <div>
+                                        <a class="btn btn-success btn-custom btn-sm" type="button"
+                                           href='{{ url_for('api.start_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
+                                           onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>Start</a>
+                                    </div>
+                                {% endif %}
+
+                                {% if instance.status > 400 or instance.status in [200] %}
+                                    <div style="margin-top: 5px;">
+                                        <a class="btn btn-info btn-custom btn-sm" type="button"
+                                           href='{{ url_for('api.restart_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
+                                           onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>Restart</a>
+                                    </div>
+                                {% endif %}
+                            </td>
                         {% endif %}
 
                     </tr>

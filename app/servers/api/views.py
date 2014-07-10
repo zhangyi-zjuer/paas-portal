@@ -19,10 +19,16 @@ def shutdown_instance():
     return instance_op('shutdown')
 
 
+@mod.route('/instance/start')
+@login_required
+def start_instance():
+    return instance_op('start')
+
+
 @mod.route('/instance/restart')
 @login_required
 def restart_instance():
-    return instance_op('start')
+    return instance_op('restart')
 
 
 def instance_op(op):
