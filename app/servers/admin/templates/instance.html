@@ -186,15 +186,15 @@
         $("#value").focus(function () {
             $(this).bind("keyup", function () {
                 var value = $(this).val().trim().toLowerCase();
-                $("[name=instance-entity]").each(function () {
+                $("[name=instance-entity]").each(
+                        function () {
                             var app_id = $(this).attr("app_id").toLowerCase().trim();
                             if (value.length == 0 || app_id.indexOf(value) >= 0) {
                                 $(this).show();
                             } else {
                                 $(this).hide();
                             }
-                        }
-                );
+                        });
             })
         });
 
