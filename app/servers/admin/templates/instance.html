@@ -88,27 +88,31 @@
                             <td class="mid-td">
 
                                 {% if instance.status in [200,501,502,503,504] %}
-                                    <div>
-                                        <a class="btn btn-success btn-custom btn-sm" type="button"
-                                           href='{{ url_for('api.shutdown_instance', app_id=instance.app_id, status=instance.status,instance_id= instance.instance_id,type=form.type.data, value=form.value.data) }}'
-                                           onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>Shutdown</a>
-                                    </div>
+                                    <a id="instance-op"
+                                       href='{{ url_for('api.shutdown_instance', app_id=instance.app_id,instance_id= instance.instance_id) }}'
+                                       onclick='{if(confirm("Are you sure to shutdown this instance?")){return true;}return false;}'>
+                                        <span class="glyphicon glyphicon glyphicon-ban-circle"></span>
+                                    </a>
+
+                                    &nbsp;&nbsp;
                                 {% endif %}
 
                                 {% if instance.status in [500,505] %}
-                                    <div>
-                                        <a class="btn btn-success btn-custom btn-sm" type="button"
-                                           href='{{ url_for('api.start_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
-                                           onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>Start</a>
-                                    </div>
+                                    <a id="instance-op"
+                                       href='{{ url_for('api.start_instance', app_id=instance.app_id, instance_id=instance.instance_id) }}'
+                                       onclick='{if(confirm("Are you sure to start this instance?")){return true;}return false;}'>
+                                        <span class="glyphicon glyphicon-play-circle"></span>
+                                    </a>
+
+                                    &nbsp;&nbsp;
                                 {% endif %}
 
                                 {% if instance.status > 400 or instance.status in [200] %}
-                                    <div style="margin-top: 5px;">
-                                        <a class="btn btn-info btn-custom btn-sm" type="button"
-                                           href='{{ url_for('api.restart_instance', app_id=instance.app_id, status=instance.status,instance_id=instance.instance_id, type=form.type.data, value=form.value.data) }}'
-                                           onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>Restart</a>
-                                    </div>
+                                    <a id="instance-op"
+                                       href='{{ url_for('api.restart_instance', app_id=instance.app_id,instance_id=instance.instance_id) }}'
+                                       onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>
+                                        <span class="glyphicon glyphicon-refresh"></span>
+                                    </a>
                                 {% endif %}
                             </td>
                         {% endif %}
@@ -207,6 +211,14 @@
                             }
                         });
             })
+        });
+
+        $("[id=instance-op]").click(function () {
+            var type = $("#type").val();
+            var value = "{{ form.value.data }}";
+            var status = $("#status").val();
+            var url = $(this).attr("href") + "&type=" + type + "&value=" + value + "&status=" + status;
+            $(this).attr("href", url);
         });
 
     </script>

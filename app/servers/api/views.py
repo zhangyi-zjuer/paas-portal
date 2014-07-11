@@ -36,6 +36,7 @@ def instance_op(op):
     instance_id = request.args.get('instance_id')
     type = request.args.get('type')
     value = request.args.get('value')
+    status = request.args.get('status')
 
     api_url = '/console/api/instance?op=' + op + '&appId=' + app_id + '&instanceId=' + instance_id
     auth_request(PAAS_HOST + api_url)
@@ -44,10 +45,7 @@ def instance_op(op):
 
     add_to_db(api_url)
 
-    if value:
-        return redirect(url_for('admin.instances', type=type, value=value))
-
-    return redirect(url_for('admin.instances', all="true"))
+    return redirect(url_for('admin.instances', type=type, value=value, status=status))
 
 
 def add_to_db(request_url):
