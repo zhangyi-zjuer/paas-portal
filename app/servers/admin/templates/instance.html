@@ -31,16 +31,23 @@
             <table class="table table-striped table-bordered" style="TABLE-LAYOUT: fixed">
                 <thead>
                 <tr>
-                    <th class="mid-td" style="width: 25%">Instance ID</th>
+                    <th class="mid-td" style="width: 22%">Instance ID</th>
                     <th class="mid-td" style="width: 5%">Group ID</th>
                     <th class="mid-td" style="width: 10%">App ID</th>
                     <th class="mid-td" style="width: 10%">App Version</th>
-                    <th class="mid-td" style="width: 12%">Instance IP</th>
+                    <th class="mid-td" style="width: 10%">Instance IP</th>
                     <th class="mid-td" style="width: 8%">Instance Port</th>
                     <th class="mid-td" style="width: 10%">Agent IP</th>
                     <th class="mid-td" style="width: 10%">Status</th>
                     {% if g.user.is_authenticated() %}
-                        <th class="mid-td" style="width: 10%">Ops</th>
+                        <th class="mid-td" style="width: 15%">
+                            Start:<span class="glyphicon glyphicon-play-circle"></span>&nbsp;
+                            Stop:<span class="glyphicon glyphicon glyphicon-ban-circle"></span>
+                            Restart:<span class="glyphicon glyphicon-refresh"></span>
+                            {% if current_user.role == 1 %}
+                                Remove:<span class="glyphicon glyphicon-remove"></span>&nbsp;
+                            {% endif %}
+                        </th>
                     {% endif %}
                 </tr>
                 </thead>
@@ -112,6 +119,18 @@
                                        href='{{ url_for('api.restart_instance', app_id=instance.app_id,instance_id=instance.instance_id) }}'
                                        onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>
                                         <span class="glyphicon glyphicon-refresh"></span>
+                                    </a>
+                                {% endif %}
+
+                                {% if current_user.role == 1 %}
+                                    {% if instance.status > 400 or instance.status in [200] %}
+                                        &nbsp;&nbsp;
+                                    {% endif %}
+
+                                    <a id="instance-op"
+                                       href='{{ url_for('api.remove_instance', app_id=instance.app_id,instance_id=instance.instance_id) }}'
+                                       onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>
+                                        <span class="glyphicon glyphicon-remove"></span>
                                     </a>
                                 {% endif %}
                             </td>

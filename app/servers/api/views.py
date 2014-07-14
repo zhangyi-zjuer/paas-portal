@@ -3,7 +3,7 @@
 import time
 import datetime
 
-from flask_login import login_required, current_user, request
+from flask_login import login_required, current_user
 from flask import Blueprint, request, redirect, url_for
 
 from config import PAAS_HOST
@@ -30,6 +30,11 @@ def start_instance():
 def restart_instance():
     return instance_op('restart')
 
+@mod.route('/instance/remove')
+@login_required
+def remove_instance():
+    return instance_op('remove')
+
 
 def instance_op(op):
     app_id = request.args.get('app_id')
@@ -39,7 +44,9 @@ def instance_op(op):
     status = request.args.get('status')
 
     api_url = '/console/api/instance?op=' + op + '&appId=' + app_id + '&instanceId=' + instance_id
-    auth_request(PAAS_HOST + api_url)
+
+    if not (op == 'remove' and current_user.role == 0):
+        auth_request(PAAS_HOST + api_url)
 
     time.sleep(0.5)
 

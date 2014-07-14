@@ -62,7 +62,7 @@ def get_optparser():
     parser.add_option("-u", "--username", dest="username",
                       help="specify the USERNAME", metavar="USERNAME")
 
-    parser.add_option("", "--password", dest="password",
+    parser.add_option("-p", "--password", dest="password",
                       help="specify the USERNAME", metavar="USERNAME")
 
     parser.add_option("", "--add_user", action='store_true',
@@ -104,7 +104,6 @@ if __name__ == "__main__":
     is_change_password = options.chg_pwd
     table = options.table
 
-    print options
 
 if is_init:
     setup()

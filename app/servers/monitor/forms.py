@@ -5,8 +5,6 @@ from flask_wtf import Form
 from wtforms import TextField, SubmitField, SelectField, BooleanField
 from wtforms.validators import Required
 
-from app.servers.monitor.util import *
-
 
 class MonitorForm(Form):
     date = TextField('type', description='Enter Date')

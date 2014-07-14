@@ -15,6 +15,7 @@ class User(Base):
 
     username = Column(u'username', CHAR(length=32), primary_key=True, nullable=False)
     password = Column(u'password', CHAR(length=32), nullable=False)
+    role = Column(u'role', INTEGER, default=0, nullable=False)
 
     def is_authenticated(self):
         return True
