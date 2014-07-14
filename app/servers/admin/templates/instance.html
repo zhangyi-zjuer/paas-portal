@@ -31,21 +31,22 @@
             <table class="table table-striped table-bordered" style="TABLE-LAYOUT: fixed">
                 <thead>
                 <tr>
-                    <th class="mid-td" style="width: 22%">Instance ID</th>
+                    <th class="mid-td" style="width: 24%">Instance ID</th>
                     <th class="mid-td" style="width: 5%">Group ID</th>
-                    <th class="mid-td" style="width: 10%">App ID</th>
-                    <th class="mid-td" style="width: 10%">App Version</th>
+                    <th class="mid-td" style="width: 8%">App ID</th>
+                    <th class="mid-td" style="width: 9%">App Version</th>
                     <th class="mid-td" style="width: 10%">Instance IP</th>
                     <th class="mid-td" style="width: 8%">Instance Port</th>
                     <th class="mid-td" style="width: 10%">Agent IP</th>
-                    <th class="mid-td" style="width: 10%">Status</th>
+                    <th class="mid-td" style="width: 8%">Status</th>
                     {% if g.user.is_authenticated() %}
-                        <th class="mid-td" style="width: 15%">
-                            Start:<span class="glyphicon glyphicon-play-circle"></span>&nbsp;
-                            Stop:<span class="glyphicon glyphicon glyphicon-ban-circle"></span>
-                            Restart:<span class="glyphicon glyphicon-refresh"></span>
+                        <th class="mid-td" style="width: 16%">
+                            Start:&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;
+                            Stop:&nbsp;<span class="glyphicon glyphicon glyphicon-ban-circle"></span>
+                            Restart:&nbsp;<span class="glyphicon glyphicon-refresh"></span>
                             {% if current_user.role == 1 %}
-                                Remove:<span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                &nbsp;
+                                Remove:&nbsp;<span class="glyphicon glyphicon-remove"></span>
                             {% endif %}
                         </th>
                     {% endif %}
