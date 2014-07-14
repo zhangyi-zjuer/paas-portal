@@ -124,10 +124,7 @@
                                 {% endif %}
 
                                 {% if current_user.role == 1 and instance.status in [500, 506] %}
-                                    {% if instance.status > 400 or instance.status in [200] %}
-                                        &nbsp;&nbsp;
-                                    {% endif %}
-
+                                    &nbsp;&nbsp;
                                     <a id="instance-op"
                                        href='{{ url_for('api.remove_instance', app_id=instance.app_id,instance_id=instance.instance_id) }}'
                                        onclick='{if(confirm("Are you sure to remove this instance?")){return true;}return false;}'>
