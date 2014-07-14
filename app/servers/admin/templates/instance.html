@@ -130,7 +130,7 @@
 
                                     <a id="instance-op"
                                        href='{{ url_for('api.remove_instance', app_id=instance.app_id,instance_id=instance.instance_id) }}'
-                                       onclick='{if(confirm("Are you sure to restart this instance?")){return true;}return false;}'>
+                                       onclick='{if(confirm("Are you sure to remove this instance?")){return true;}return false;}'>
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </a>
                                 {% endif %}
