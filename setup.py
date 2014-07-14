@@ -63,7 +63,7 @@ def get_optparser():
                       help="specify the USERNAME", metavar="USERNAME")
 
     parser.add_option("-p", "--password", dest="password",
-                      help="specify the USERNAME", metavar="USERNAME")
+                      help="specify the PASSWORD", metavar="PASSWORD")
 
     parser.add_option("", "--add_user", action='store_true',
                       dest="add_user", default=False,
