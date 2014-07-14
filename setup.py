@@ -37,7 +37,7 @@ def change_password(username, password):
         return
 
     for user in users:
-        user.password = password
+        user.password = hashlib.md5(password.encode('utf-8')).hexdigest()
 
     print "%s password changed" % username
     DbUtil.add(users)

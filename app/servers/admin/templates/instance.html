@@ -41,11 +41,11 @@
                     <th class="mid-td" style="width: 8%">Status</th>
                     {% if g.user.is_authenticated() %}
                         <th class="mid-td" style="width: 16%">
-                            Start:&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;
-                            Stop:&nbsp;<span class="glyphicon glyphicon glyphicon-ban-circle"></span>
+                            Start:&nbsp;<span class="glyphicon glyphicon-play-circle"></span><br/>
+                            Stop:&nbsp;<span class="glyphicon glyphicon glyphicon-ban-circle"></span><br/>
                             Restart:&nbsp;<span class="glyphicon glyphicon-refresh"></span>
                             {% if current_user.role == 1 %}
-                                &nbsp;
+                                <br/>
                                 Remove:&nbsp;<span class="glyphicon glyphicon-remove"></span>
                             {% endif %}
                         </th>
