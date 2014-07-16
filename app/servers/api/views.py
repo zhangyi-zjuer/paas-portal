@@ -47,6 +47,7 @@ def create_instance():
     api_url = '/console/api/app?op=%s&appId=%s&version=%s&number=%s' % ('create', app_id, app_version, number)
     auth_request(PAAS_HOST + api_url)
     time.sleep(0.5)
+    add_to_db(api_url)
     return redirect(url_for('admin.instances', type='1', value=app_id + ":" + app_version))
 
 
