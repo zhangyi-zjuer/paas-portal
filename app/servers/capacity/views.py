@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-7-16.
 
-import time
-import datetime
-
-from flask_login import login_required, current_user
 from flask import Blueprint, request, redirect, url_for, render_template, flash
 
-from config import PAAS_HOST
-from app.utils.paasUtil import auth_request
-from app.models.database import AppVersion
 from forms import CreateInstanceForm
-
+from app.models.database import Instance
+from config import INSTANCE_STATUA_1
 
 mod = Blueprint('capacity', __name__, template_folder='templates', static_folder='static')
 
@@ -20,9 +14,9 @@ mod = Blueprint('capacity', __name__, template_folder='templates', static_folder
 def create_instance():
     form = CreateInstanceForm()
     apps = {}
-    for app in AppVersion.query.all():
+    for app in Instance.query.filter(Instance.status != 400).all():
         app_id = app.app_id
-        app_version = app.version
+        app_version = app.app_version
         if not app_id in apps.keys():
             apps[app_id] = []
 
