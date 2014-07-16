@@ -30,10 +30,24 @@ def start_instance():
 def restart_instance():
     return instance_op('restart')
 
+
 @mod.route('/instance/remove')
 @login_required
 def remove_instance():
     return instance_op('remove')
+
+
+@mod.route('/instance/create')
+@login_required
+def create_instance():
+    app_id = request.args.get('appId')
+    app_version = request.args.get('version')
+    number = request.args.get('num') or '1'
+
+    api_url = '/console/api/app?op=%s&appId=%s&version=%s&number=%s' % ('create', app_id, app_version, number)
+    auth_request(PAAS_HOST + api_url)
+    time.sleep(0.5)
+    return redirect(url_for('admin.instances', type='1', value=app_id + ":" + app_version))
 
 
 def instance_op(op):

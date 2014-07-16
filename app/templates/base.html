@@ -16,6 +16,9 @@
                     <li><a href="{{ url_for("admin.networks") }}">Network</a></li>
                     <li><a href="{{ url_for("admin.instances") }}">Instances</a></li>
                     <li><a href="{{ url_for("monitor.index") }}">Monitor</a></li>
+                    {% if g.user.is_authenticated() and current_user.role == 1 %}
+                        <li><a href="{{ url_for("capacity.create_instance") }}">Capacity</a></li>
+                    {% endif %}
                 </ul>
                 {% if g.user.is_authenticated() %}
                     <ul class="nav navbar-nav navbar-right">

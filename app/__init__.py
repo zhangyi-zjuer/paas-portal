@@ -44,8 +44,10 @@ from app.servers.admin.views import mod as admin_module
 from app.servers.user.views import mod as user_module
 from app.servers.api.views import mod as api_module
 from app.servers.monitor.views import mod as monitor_module
+from app.servers.capacity.views import mod as capacity_module
 
 app.register_blueprint(admin_module, url_prefix='/admin')
 app.register_blueprint(user_module, url_prefix='/user')
 app.register_blueprint(api_module, url_prefix='/api')
 app.register_blueprint(monitor_module, url_prefix='/monitor')
+app.register_blueprint(capacity_module, url_prefix='/capacity')
