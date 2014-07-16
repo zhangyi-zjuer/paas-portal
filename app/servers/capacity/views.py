@@ -27,7 +27,7 @@ def create_instance():
             apps[app_id] = []
 
         if not app_version in apps[app_id]:
-            apps[app_id].add(app_version.strip())
+            apps[app_id].append(app_version.strip())
 
     for k, v in apps.iteritems():
         apps[k] = ",".join(sorted(v))
