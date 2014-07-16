@@ -80,6 +80,3 @@ def add_to_db(request_url):
     instance_operator.request = request_url
     instance_operator.timestamp = datetime.datetime.now()
     DbUtil.add(instance_operator)
-
-
-

@@ -3,14 +3,16 @@
 
 from flask import Blueprint, request, redirect, url_for, render_template, flash
 
+from flask.ext.login import login_required
+
 from forms import CreateInstanceForm
 from app.models.database import Instance
-from config import INSTANCE_STATUA_1
 
 mod = Blueprint('capacity', __name__, template_folder='templates', static_folder='static')
 
 
 @mod.route('/create', methods=['GET', 'POST'])
+@login_required
 def create_instance():
     form = CreateInstanceForm()
     apps = {}
@@ -44,7 +46,3 @@ def create_instance():
             return render_template('create.html', form=form)
 
         return redirect(url_for('api.create_instance', appId=app_id, version=app_version, num=num))
-
-
-
-
