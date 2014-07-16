@@ -16,7 +16,9 @@
     {{ super() }}
     <script type="text/javascript">
         function setAppVersion(appid) {
-{#            $("#app_version").clear();#}
+
+            $("#app_version").empty();
+
             var app_versions = $("p[app-id=" + appid + "]").attr("app-versions").split(',');
             console.log(app_versions);
             for (var i in app_versions) {
