@@ -24,14 +24,15 @@ def create_instance():
         app_id = app.app_id
         app_version = app.version
         if not app_id in apps.keys():
-            apps[app_id] = set()
+            apps[app_id] = []
 
-        apps[app_id].add(app_version)
+        if not app_version in apps[app_id]:
+            apps[app_id].add(app_version.strip())
 
     for k, v in apps.iteritems():
         apps[k] = ",".join(sorted(v))
 
-    form.app_id.choices = [(ele, ele) for ele in apps.keys()]
+    form.app_id.choices = sorted([(ele, ele) for ele in apps.keys()])
 
     if request.method == 'GET':
         return render_template('create.html', form=form, apps=apps.iteritems())
