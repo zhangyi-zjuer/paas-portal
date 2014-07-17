@@ -2,27 +2,21 @@
 {% block content %}
     <div class="container">
         <br/>
-
         {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
 
         {% for app in apps %}
             <p app-id="{{ app[0] }}" app-versions="{{ app[1] }}" style="display: none;"/>
         {% endfor %}
-
-
     </div>
 {% endblock %}
 {% block scripts %}
     {{ super() }}
     <script type="text/javascript">
+
         function setAppVersion(appid) {
-
             $("#app_version").empty();
-
             var app_versions = $("p[app-id=" + appid + "]").attr("app-versions").split(',');
-            console.log(app_versions);
             for (var i in app_versions) {
-                console.log(app_versions[i]);
                 $("#app_version").append("<option value='" + app_versions[i] + "'>" + app_versions[i] + "</option>")
             }
         }
