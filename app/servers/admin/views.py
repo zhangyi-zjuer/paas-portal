@@ -212,5 +212,8 @@ def get_machine_status(obj):
 
 
 def get_instance_status(obj):
-    obj.is_running = True if send_head_request(obj.instance_ip + ':8080',
-                                               '/inspect/healthcheck') == 200 else False
+    if obj.status != 200:
+        obj.is_running = False
+    else:
+        obj.is_running = True if send_head_request(obj.instance_ip + ':8080',
+                                                   '/inspect/healthcheck') == 200 else False

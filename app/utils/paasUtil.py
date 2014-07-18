@@ -141,7 +141,7 @@ def run_per_thread(funcs):
         tsk.join()
 
 
-def send_head_request(domain, url, timeout=5):
+def send_head_request(domain, url, timeout=2):
     try:
         conn = httplib.HTTPConnection(domain, timeout=timeout)
         conn.request("HEAD", url)
