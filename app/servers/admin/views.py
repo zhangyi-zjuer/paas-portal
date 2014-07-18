@@ -126,7 +126,7 @@ def instances():
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
 
-        tasks.append((get_machine_status, [instance]))
+        tasks.append((get_instance_status, [instance]))
 
         total += 1
 
