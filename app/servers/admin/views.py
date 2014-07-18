@@ -8,7 +8,7 @@ from flask.ext.login import login_required
 import app.utils.dbUtil as DbUtil
 from app.models.database import *
 from app.servers.admin.forms import *
-from app.utils.paasUtil import format_num, get_agent_info, send_head_request
+from app.utils.paasUtil import format_num, get_agent_info, send_head_request, run_per_thread
 from config import INSTANCE_STATUA_1
 
 
@@ -32,11 +32,15 @@ def machines():
         else:
             machines = Machine.query.filter(Machine.ip == ip).all()
 
+    tasks = []
     for machine in machines:
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
         machine.format_disk = format_num(machine.disk)
         machine.format_memory = format_num(machine.memory)
-        machine.is_running = True if send_head_request(machine.ip + ':8080', '/') == 200 else False
+
+        tasks.append((get_machine_status, [machine]))
+
+    run_per_thread(tasks)
 
     ips = '["' + '","'.join([machine.ip for machine in Machine.query.all()]) + '"]'
 
@@ -118,10 +122,11 @@ def instances():
         status_choice.append((instance.status, INSTANCE_STATUA_1[instance.status]))
 
     statuses = {}
+    tasks = []
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
 
-        instance.is_running = True if send_head_request(instance.instance_ip + ':8080', '/inspect/healthcheck') == 200 else False
+        tasks.append((get_machine_status, [instance]))
 
         total += 1
 
@@ -142,6 +147,8 @@ def instances():
 
     if not form.status.data in map(lambda d: d[0], status_choice):
         form.status.data = -1
+
+    run_per_thread(tasks)
 
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
                            total=total, statuses=statuses.iteritems())
@@ -199,3 +206,11 @@ def get_form_from_db(obj, form):
             setattr(getattr(form, attr), 'data', getattr(obj, attr))
     return form
 
+
+def get_machine_status(obj):
+    obj.is_running = True if send_head_request(obj.ip + ':8080', '/') == 200 else False
+
+
+def get_instance_status(obj):
+    obj.is_running = True if send_head_request(obj.instance_ip + ':8080',
+                                               '/inspect/healthcheck') == 200 else False

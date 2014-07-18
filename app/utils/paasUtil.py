@@ -5,6 +5,7 @@ import urllib2
 import base64
 import httplib
 
+from threading import Thread
 from config import GROUP_MODE, INSTANCE_STATUA, BasicAuth
 from app.models.database import *
 
@@ -127,6 +128,17 @@ def format_num(n):
         n = n * 1.0 / 1024
         index += 1
     return str('%.2f' % n) + unit[index]
+
+
+def run_per_thread(funcs):
+    tsks = []
+    for func in funcs:
+        t = Thread(target=func[0], args=func[1])
+        t.start()
+        tsks.append(t)
+
+    for tsk in tsks:
+        tsk.join()
 
 
 def send_head_request(domain, url, timeout=5):
