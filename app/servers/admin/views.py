@@ -8,7 +8,7 @@ from flask.ext.login import login_required
 import app.utils.dbUtil as DbUtil
 from app.models.database import *
 from app.servers.admin.forms import *
-from app.utils.paasUtil import format_num, get_agent_info, send_head_request, run_per_thread
+from app.utils.paasUtil import format_num, get_agent_info, send_head_request, run_use_threadpool
 from config import INSTANCE_STATUA_1
 
 
@@ -32,15 +32,15 @@ def machines():
         else:
             machines = Machine.query.filter(Machine.ip == ip).all()
 
-    tasks = []
+    data = []
     for machine in machines:
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
         machine.format_disk = format_num(machine.disk)
         machine.format_memory = format_num(machine.memory)
 
-        tasks.append((get_machine_status, [machine]))
+        data.append(machine)
 
-    run_per_thread(tasks)
+    run_use_threadpool(get_machine_status, data, 20)
 
     ips = '["' + '","'.join([machine.ip for machine in Machine.query.all()]) + '"]'
 
@@ -122,11 +122,11 @@ def instances():
         status_choice.append((instance.status, INSTANCE_STATUA_1[instance.status]))
 
     statuses = {}
-    tasks = []
+    data = []
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
 
-        tasks.append((get_instance_status, [instance]))
+        data.append(instance)
 
         total += 1
 
@@ -148,7 +148,7 @@ def instances():
     if not form.status.data in map(lambda d: d[0], status_choice):
         form.status.data = -1
 
-    run_per_thread(tasks)
+    run_use_threadpool(get_instance_status, data, 100)
 
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
                            total=total, statuses=statuses.iteritems())

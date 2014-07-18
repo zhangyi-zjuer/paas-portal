@@ -4,6 +4,7 @@ import json
 import urllib2
 import base64
 import httplib
+import threadpool
 
 from threading import Thread
 from config import GROUP_MODE, INSTANCE_STATUA, BasicAuth
@@ -139,6 +140,15 @@ def run_per_thread(funcs):
 
     for tsk in tsks:
         tsk.join()
+
+
+def run_use_threadpool(func, data, pool_num=100):
+    pool = threadpool.ThreadPool(pool_num)
+
+    requests = threadpool.makeRequests(func, data)
+    [pool.putRequest(req) for req in requests]
+
+    pool.wait()
 
 
 def send_head_request(domain, url, timeout=2):
