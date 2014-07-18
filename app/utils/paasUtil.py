@@ -3,8 +3,8 @@
 import json
 import urllib2
 import base64
+import httplib
 
-from flask import url_for
 from config import GROUP_MODE, INSTANCE_STATUA, BasicAuth
 from app.models.database import *
 
@@ -127,3 +127,14 @@ def format_num(n):
         n = n * 1.0 / 1024
         index += 1
     return str('%.2f' % n) + unit[index]
+
+
+def send_head_request(domain, url, timeout=5):
+    try:
+        conn = httplib.HTTPConnection(domain, timeout=timeout)
+        conn.request("HEAD", url)
+        res = conn.getresponse()
+        return res.status
+    except:
+        return 444
+

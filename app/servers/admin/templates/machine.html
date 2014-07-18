@@ -9,7 +9,8 @@
             <thead>
             <tr>
                 <th class="mid-td" style="width: 5%">ID</th>
-                <th class="mid-td" style="width: 15%">IP</th>
+                <th class="mid-td" style="width: 10%">IP</th>
+                <th class="mid-td" style="width: 5%">Status</th>
                 <th class="mid-td" style="width: 10%">Cpu</th>
                 <th class="mid-td" style="width: 10%">Cpu Free</th>
                 <th class="mid-td" style="width: 10%">Memory</th>
@@ -28,6 +29,18 @@
 
                     <td class="mid-td">
                         <a href='{{ url_for('admin.show_agent', machine_id=machine.id) if machine.basic.instance_num else "" }}'> {{ machine.ip }}</a>
+                    </td>
+
+                    <td class="mid-td">
+                        {% if machine.is_running %}
+                            <font color="green">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </font>
+                        {% else %}
+                            <font color="red">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </font>
+                        {% endif %}
                     </td>
 
                     <td class="mid-td">

@@ -8,7 +8,7 @@ from flask.ext.login import login_required
 import app.utils.dbUtil as DbUtil
 from app.models.database import *
 from app.servers.admin.forms import *
-from app.utils.paasUtil import format_num, get_agent_info
+from app.utils.paasUtil import format_num, get_agent_info, send_head_request
 from config import INSTANCE_STATUA_1
 
 
@@ -36,6 +36,7 @@ def machines():
         machine.basic, machine.instances, machine.groups = get_agent_info(machine.agent)
         machine.format_disk = format_num(machine.disk)
         machine.format_memory = format_num(machine.memory)
+        machine.is_running = True if send_head_request(machine.ip + ':8080', '/') == 200 else False
 
     ips = '["' + '","'.join([machine.ip for machine in Machine.query.all()]) + '"]'
 
@@ -119,6 +120,9 @@ def instances():
     statuses = {}
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
+
+        instance.is_running = True if send_head_request(instance.instance_ip + ':8080', '/inspect/healthcheck') == 200 else False
+
         total += 1
 
         if not (instance.status, instance.status_desc) in statuses:
@@ -194,3 +198,4 @@ def get_form_from_db(obj, form):
         if attr not in ['__class__', 'csrf_token'] and hasattr(form, attr) and hasattr(getattr(form, attr), 'data'):
             setattr(getattr(form, attr), 'data', getattr(obj, attr))
     return form
+
