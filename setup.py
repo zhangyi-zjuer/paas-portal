@@ -4,7 +4,7 @@
 import hashlib
 from optparse import OptionParser
 
-from app.models.local import User, CatServerNameMap, InstanceOperator
+from app.models.local import *
 import app.utils.dbUtil as DbUtil
 
 
@@ -103,7 +103,6 @@ if __name__ == "__main__":
     is_del_user = options.del_user
     is_change_password = options.chg_pwd
     table = options.table
-
 
 if is_init:
     setup()

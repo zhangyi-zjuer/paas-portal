@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Created by zhangyi on 14-6-20.
 
-from sqlalchemy import CHAR, Column, INTEGER, TIMESTAMP, TEXT
+from sqlalchemy import CHAR, Column, INTEGER, TIMESTAMP, TEXT, BOOLEAN
 from app.utils.dbUtil import generate_db
 from config import local_db_url
 
@@ -50,3 +50,14 @@ class InstanceOperator(Base):
     user = Column(u'user', CHAR(length=128), nullable=False)
     timestamp = Column(u'timestamp', TIMESTAMP, nullable=False)
     request = Column(u'request', TEXT)
+
+
+class Status(Base):
+    __tablename__ = 'status'
+    __table_args__ = {'sqlite_autoincrement': True}
+    id = Column(u'id', INTEGER, primary_key=True, autoincrement=True)
+    ip = Column(u'ip', CHAR(length=64), nullable=False)
+    type = Column(u'type', CHAR(length=32), nullable=False)
+    is_running = Column(u'is_running', BOOLEAN, nullable=False)
+    update_time = Column(u'update_time', TIMESTAMP, nullable=False)
+
