@@ -246,7 +246,7 @@
 
         $("[id=instance-op]").click(function () {
             var type = $("#type").val();
-            var value = "{{ form.value.data }}";
+            var value = $("$value").attr("value");
             var status = $("#status").val();
             var url = $(this).attr("href") + "&type=" + type + "&value=" + value + "&status=" + status;
             $(this).attr("href", url);
