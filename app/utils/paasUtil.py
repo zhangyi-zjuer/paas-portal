@@ -159,4 +159,7 @@ def send_head_request(domain, url, timeout=2):
         return res.status
     except:
         return 444
+    finally:
+        if conn:
+            conn.close()
 
