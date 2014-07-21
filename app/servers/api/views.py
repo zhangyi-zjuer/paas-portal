@@ -54,9 +54,9 @@ def create_instance():
 def instance_op(op):
     app_id = request.args.get('app_id')
     instance_id = request.args.get('instance_id')
-    type = request.args.get('type')
-    value = request.args.get('value')
-    status = request.args.get('status')
+    type = request.args.get('type') or '1'
+    value = request.args.get('value') or ''
+    status = request.args.get('status') or '-1'
 
     api_url = '/console/api/instance?op=' + op + '&appId=' + app_id + '&instanceId=' + instance_id
 
