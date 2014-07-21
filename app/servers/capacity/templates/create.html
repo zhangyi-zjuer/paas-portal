@@ -31,5 +31,12 @@
             setAppVersion(appId);
         })
 
+        $('#submit_button').click(function (event) {
+            if (!confirm("Are you sure to create " + $("#num").val() +
+                    " instances of " + $("#app_id").val() + ":" + $("#app_version").val() + " ?")) {
+                event.preventDefault();
+            }
+        })
+
     </script>
 {% endblock %}
