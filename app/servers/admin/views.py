@@ -124,6 +124,10 @@ def instances():
     statuses = {}
 
     all_status = get_all_status()
+    actual = {
+        'RUN': 0,
+        'DOWN': 0
+    }
 
     for instance in instances:
         instance.status_desc = INSTANCE_STATUA_1[instance.status]
@@ -132,6 +136,11 @@ def instances():
             instance.is_running = all_status[instance.instance_ip]
         else:
             instance.is_running = True
+
+        if instance.is_running:
+            actual['RUN'] += 1
+        else:
+            actual['DOWN'] += 1
 
         total += 1
 
@@ -154,7 +163,7 @@ def instances():
         form.status.data = -1
 
     return render_template("instance.html", instances=instances, form=form, app_ids=app_ids,
-                           total=total, statuses=statuses.iteritems())
+                           total=total, statuses=statuses.iteritems(), actual=actual)
 
 
 @mod.route('/networks')
